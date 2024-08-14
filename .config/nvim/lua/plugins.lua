@@ -37,6 +37,7 @@ packer.startup(function(use)
 			'3rd/image.nvim',
 		},
 	})
+	use({ 'sindrets/diffview.nvim' })
 
 	-- LSP
 	use({ 'neovim/nvim-lspconfig' })
