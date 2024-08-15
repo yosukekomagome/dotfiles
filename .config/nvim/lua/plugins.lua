@@ -26,7 +26,6 @@ packer.startup(function(use)
 	}) -- コメントアウト
 	use({ 'norcalli/nvim-colorizer.lua' })
 	use({ 'kylechui/nvim-surround' })
-	use({ 'lewis6991/gitsigns.nvim' })
 	use({
 		'nvim-neo-tree/neo-tree.nvim',
 		branch = 'v3.x',
@@ -37,7 +36,17 @@ packer.startup(function(use)
 			'3rd/image.nvim',
 		},
 	})
+
+	-- Git
+	use({ 'lewis6991/gitsigns.nvim' })
 	use({ 'sindrets/diffview.nvim' })
+	use({
+		'akinsho/toggleterm.nvim',
+		tag = '*',
+		config = function()
+			require('toggleterm').setup()
+		end,
+	})
 
 	-- LSP
 	use({ 'neovim/nvim-lspconfig' })

@@ -12,3 +12,5 @@ require('tabline').setup({
 -- keymap.set("n", "<Tab>", ":TablineBufferNext<cr>", opts)
 -- keymap.set("n", "<S-Tab>", ":TablineBufferPrevious<cr>", opts)
 -- commint test
+-- typo!!!
+-- commit test2
