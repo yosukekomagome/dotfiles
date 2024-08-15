@@ -7,6 +7,7 @@ require('tabline').setup({
 })
 
 -- keymap
+-- local keymap = vim.keymap
 -- local opts = { noremap = true , silent = true }
--- vim.keymap.set("n", "<Tab>", ":TablineBufferNext<cr>", opts)
--- vim.keymap.set("n", "<S-Tab>", ":TablineBufferPrevious<cr>", opts)
+-- keymap.set("n", "<Tab>", ":TablineBufferNext<cr>", opts)
+-- keymap.set("n", "<S-Tab>", ":TablineBufferPrevious<cr>", opts)
