@@ -27,7 +27,6 @@ keymap.set('n', 'sx', ':close<Return>', opts)
 -- buffer
 keymap.set('n', '<C-n>', ':bnext<CR>', opts)
 keymap.set('n', '<C-p>', ':bprev<Return>', opts)
-keymap.set('n', 'bd', ':bd<Return>', opts)
 
 -- tab
 keymap.set('n', '<Tab>', ':tabnext<CR>', opts)
