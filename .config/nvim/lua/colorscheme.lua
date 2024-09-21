@@ -29,39 +29,39 @@ require('solarized-osaka').setup({
 	--- You can override specific highlights to use other groups or a hex color
 	--- function will be called with a Highlights and ColorScheme table
 	on_highlights = function(highlights, colors)
+		-- local color_fg = '#05f1f5'
+		local color_fg = '#268bd3'
 		highlights.TelescopeBorder = {
-			fg = colors.fg_dark,
+			-- color_fg is original color setting
+			-- fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopePromptBorder = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopePromptTitle = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopePromptPrefix = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopePromptNormal = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopePreviewTitle = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
 		highlights.TelescopeResultsTitle = {
-			fg = colors.fg_dark,
+			fg = color_fg,
 		}
-		highlights.LineNr = {
-			fg = '#29a298',
-		}
-		highlights.CursorLineNr = {
-			fg = '#05f1f5',
-		}
+		-- highlights.LineNr = {
+		-- 	fg = '#006e70',
+		-- }
+		-- highlights.CursorLineNr = {
+		-- 	fg = '#05f1f5',
+		-- }
 	end,
 })
---　カラースキーム設定
--- vim.cmd([[colorscheme solarized-osaka]])
--- vim.cmd("highlight LineNr guifg=#29a298")
--- vim.cmd("highlight CursorLineNr guifg=#849900 gui=bold")
 
 -- 半透明に設定する
 require('tokyonight').setup({
@@ -103,8 +103,14 @@ require('tokyonight').setup({
 		hl.TelescopeResultsTitle = {
 			fg = c.fg_dark,
 		}
+		hl.TelescopeSelection = {
+			bold = true,
+			fg = '#a6e3a1',
+			bg = '#181825',
+		}
 	end,
 })
 
-vim.cmd([[colorscheme tokyonight-moon]])
-vim.cmd('highlight TelescopeSelection cterm=bold gui=bold guifg=#a6e3a1 guibg=#181825')
+-- set colorscheme
+-- vim.cmd([[colorscheme tokyonight-moon]])
+vim.cmd([[colorscheme solarized-osaka]])
