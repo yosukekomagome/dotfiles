@@ -1,4 +1,4 @@
-local js_formatters = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true }
+local js_formatters = { 'prettierd', 'eslint_d', stop_after_first = false }
 require('conform').setup({
 	formatters_by_ft = {
 		json = js_formatters,
