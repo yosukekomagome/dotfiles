@@ -1,4 +1,4 @@
--- Lspkindのrequire
+local luasnip = require('luasnip')
 local lspkind = require('lspkind')
 
 --補完関係の設定
@@ -6,13 +6,11 @@ local cmp = require('cmp')
 cmp.setup({
 	snippet = {
 		expand = function(args)
-			-- vim.fn["vsnip#anonymous"](args.body)
-			require('luasnip').lsp_expand(args.body)
+			luasnip.lsp_expand(args.body)
 		end,
 	},
 	sources = {
 		{ name = 'nvim_lsp' }, --ソース類を設定
-		-- { name = 'vsnip' }, -- For vsnip users.
 		{ name = 'luasnip' },
 		{ name = 'buffer' },
 		{ name = 'path' },
@@ -25,6 +23,14 @@ cmp.setup({
 		['<tab>'] = cmp.mapping.confirm({ select = true }), --Ctrl+yで補完を選択確定
 		['<C-u>'] = cmp.mapping.scroll_docs(-4),
 		['<C-d>'] = cmp.mapping.scroll_docs(4),
+
+		['<C-n>'] = cmp.mapping(function(fallback)
+			if luasnip.expand_or_jumpable() then
+				luasnip.expand_or_jump()
+			else
+				fallback()
+			end
+		end, { 'i', 's' }),
 	}),
 	experimental = {
 		ghost_text = false,

@@ -57,6 +57,7 @@ packer.startup(function(use)
 	use({ 'hrsh7th/cmp-buffer' }) -- bufferを補完ソースに
 	use({ 'hrsh7th/cmp-cmdline' }) -- cmdを補完ソースに
 	use({ 'hrsh7th/cmp-path' }) -- pathを補完ソースに
+	use({ 'saadparwaiz1/cmp_luasnip' }) --cmpでLuasnipを使うためのプラグイン
 	use({ 'onsails/lspkind-nvim' }) -- 補完欄にアイコンを表示
 	use({ 'nvimdev/lspsaga.nvim' })
 
