@@ -42,3 +42,6 @@ keymap.set('n', 'sl', '<C-w>l')
 
 -- no highlight
 keymap.set('n', '<ESC><ESC>', ':nohl<CR>', opts)
+
+-- redo
+keymap.set('n', '<S-u>', '<C-r>', opts)
