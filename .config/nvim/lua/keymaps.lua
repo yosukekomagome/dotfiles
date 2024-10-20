@@ -45,3 +45,6 @@ keymap.set('n', '<ESC><ESC>', ':nohl<CR>', opts)
 
 -- redo
 keymap.set('n', '<S-u>', '<C-r>', opts)
+
+-- yank ビジュアルモード時のペーストで無名レジスタを更新しない
+keymap.set('v', 'p', '"_dP', opts)
