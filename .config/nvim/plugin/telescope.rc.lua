@@ -38,6 +38,7 @@ telescope.setup({
 				['sv'] = actions.select_vertical,
 				['ss'] = actions.select_horizontal,
 				['st'] = actions.select_tab,
+				['o'] = actions.select_default,
 				['l'] = actions.select_default,
 			},
 		},
