@@ -72,7 +72,7 @@ packer.startup(function(use)
 
 	-- Cursor scroll & UI
 	use({ 'karb94/neoscroll.nvim' })
-	use({ 'echasnovski/mini.indentscope' })
+	-- use({ 'echasnovski/mini.indentscope' })
 	use({ 'kdheepak/tabline.nvim' })
 	use({
 		'folke/noice.nvim',
@@ -82,6 +82,7 @@ packer.startup(function(use)
 		},
 	})
 	use({ 'b0o/incline.nvim', require = { 'nvim-tree/nvim-web-devicons' } })
+	use('shellRaining/hlchunk.nvim')
 
 	-- Treesitter
 	use({
