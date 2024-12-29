@@ -20,8 +20,8 @@ telescope.setup({
 			'^Movies',
 			'^Music',
 			'vendor',
-			'node_modules',
-			'dist',
+			'^node_modules/',
+			'^dist/',
 		},
 		vimgrep_arguments = {
 			'rg',
