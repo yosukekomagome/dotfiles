@@ -19,8 +19,9 @@ telescope.setup({
 			'Parallels',
 			'^Movies',
 			'^Music',
-			-- "node_modules",
 			'vendor',
+			'node_modules',
+			'dist',
 		},
 		vimgrep_arguments = {
 			'rg',
