@@ -12,9 +12,12 @@ keymap.set('i', 'ｊｊ', '<ESC>', opts)
 -- Do not yank with x,s
 keymap.set('n', 'x', '"_x', opts)
 keymap.set('n', 's', '"_s', opts)
+--
+-- disable
+keymap.set('n', 's', '<Nop>', opts)
 
 -- Delete a word backwards
--- keymap.set("n", "dw", 'vb"_d')
+-- keymap.set('n', 'dw', 'vb"_d')
 
 -- Select all
 keymap.set('n', '<C-a>', 'gg<S-v>G')
@@ -49,3 +52,10 @@ keymap.set('n', '<C-r>', '<Nop>', opts)
 
 -- yank ビジュアルモード時のペーストで無名レジスタを更新しない
 keymap.set('v', 'p', '"_dP', opts)
+
+-- Resize window
+keymap.set('n', '<S-left>', '<C-w><')
+keymap.set('n', '<S-right>', '<C-w>>')
+keymap.set('n', '<S-up>', '<C-w>+')
+keymap.set('n', '<S-down>', '<C-w>-')
+keymap.set('n', '=', '<C-w>=')
