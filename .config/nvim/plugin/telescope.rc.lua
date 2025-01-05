@@ -89,31 +89,44 @@ telescope.setup({
 })
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('file_browser')
+require('telescope').load_extension('aerial')
 
 -- keymaps
 -- local { noremap = true, silent = true, desc = '' } = { noremap = true, silent = true, desc = '' }
+
 vim.keymap.set('n', ';f', function()
 	builtin.find_files({ no_ignore = false, hidden = true })
 end, { noremap = true, silent = true, desc = 'telescope find_files' })
+
 vim.keymap.set('n', ';g', function()
 	builtin.live_grep()
 end, { noremap = true, silent = true, desc = 'telescope live_grep' })
+
 vim.keymap.set('n', ';e', function()
 	builtin.diagnostics()
 end, { noremap = true, silent = true, desc = 'telescope diagnostics' })
+
 vim.keymap.set('n', ';b', function()
 	builtin.buffers()
 end, { noremap = true, silent = true, desc = 'telescope buffers' })
+
 vim.keymap.set('n', ';h', function()
 	builtin.help_tags()
 end, { noremap = true, silent = true, desc = 'telescope help_tags' })
+
 vim.keymap.set('n', ';k', function()
 	builtin.keymaps()
 end, { noremap = true, silent = true, desc = 'telescope keymaps' })
+
 -- 直前に実行したtelescopeFileBrowserの機能を再度起動する（間違えるので使わない）
 -- vim.keymap.set('n', ';;', function()
 -- 	builtin.resume()
 -- end, opts)
+
 vim.keymap.set('n', 'sf', function()
 	telescope.load_extension('file_browser').file_browser()
 end, { noremap = true, silent = true, desc = 'telescope file_browser' })
+
+vim.keymap.set('n', ';a', function()
+	telescope.load_extension('aerial').aerial({ initial_mode = 'normal' })
+end, { noremap = true, silent = true, desc = 'telescope aerial' })

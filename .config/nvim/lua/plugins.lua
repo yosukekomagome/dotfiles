@@ -100,4 +100,5 @@ packer.startup(function(use)
 	use({ 'nvim-telescope/telescope-file-browser.nvim' })
 	use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
 	use({ 'nvim-tree/nvim-web-devicons' })
+	use({ 'stevearc/aerial.nvim' }) -- show outline view plugin
 end)
