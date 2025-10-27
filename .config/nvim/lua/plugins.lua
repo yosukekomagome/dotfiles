@@ -26,16 +26,6 @@ packer.startup(function(use)
 	}) -- コメントアウト
 	use({ 'norcalli/nvim-colorizer.lua' })
 	use({ 'kylechui/nvim-surround' })
-	use({
-		'nvim-neo-tree/neo-tree.nvim',
-		branch = 'v3.x',
-		requires = {
-			'nvim-lua/plenary.nvim',
-			'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-			'MunifTanjim/nui.nvim',
-			'3rd/image.nvim',
-		},
-	})
 
 	-- Git
 	use({ 'lewis6991/gitsigns.nvim' })
@@ -50,8 +40,14 @@ packer.startup(function(use)
 
 	-- LSP
 	use({ 'neovim/nvim-lspconfig' })
-	use({ 'williamboman/mason.nvim' })
-	use({ 'williamboman/mason-lspconfig.nvim' })
+	use({
+		'williamboman/mason.nvim',
+		commit = 'e2f7f90', -- 正常に動作していたバージョンに固定
+	})
+	use({
+		'williamboman/mason-lspconfig.nvim',
+		commit = '37a336b', -- 正常に動作していたバージョンに固定
+	})
 	use({ 'hrsh7th/nvim-cmp' }) -- 補完エンジン本体
 	use({ 'hrsh7th/cmp-nvim-lsp' }) -- LSPを補完ソースに
 	use({ 'hrsh7th/cmp-buffer' }) -- bufferを補完ソースに

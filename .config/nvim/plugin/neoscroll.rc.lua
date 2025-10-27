@@ -1,16 +1,34 @@
-require('neoscroll').setup({
-	-- Disable <C-e>, <C-y> because I faced a performance issue in a small
-	-- window.
-	-- mappings = { 'gg', 'G', '<C-u>', '<C-d>', '<C-b>', '<C-f>' },
-	mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>' },
-	easing_function = 'sine',
-})
-local t = {}
+-- 1. まず 'neoscroll' モジュール本体を読み込み、変数に保存します
+local neoscroll = require('neoscroll')
 
--- t["gg"] = { "scroll", { "-2*vim.api.nvim_buf_line_count(0)", "true", "1", [['sine']] } }
--- t["G"] = { "scroll", { "2*vim.api.nvim_buf_line_count(0)", "true", "200", [['sine']] } }
-t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '125' } }
-t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '125' } }
-t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '125' } }
-t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '125' } }
-require('neoscroll.config').set_mappings(t)
+-- 2. その変数を使って setup() を呼び出します
+neoscroll.setup({
+	easing_function = 'sine',
+	mappings = {}, -- neoscrollによるデフォルトのキーマップを無効化
+})
+
+-- 3. Vim標準のキーマップ設定（vim.keymap.set）を使います
+local opts = { noremap = true, silent = true }
+local modes = { 'n', 'v', 's' } -- ノーマル、ビジュアル、セレクトモードで有効
+
+-- 4. 'neoscroll.scroll' には文字列ではなく、数値を渡します
+
+-- <C-u>
+vim.keymap.set(modes, '<C-u>', function()
+	neoscroll.scroll(-vim.wo.scroll, true, 125)
+end, opts)
+
+-- <C-d>
+vim.keymap.set(modes, '<C-d>', function()
+	neoscroll.scroll(vim.wo.scroll, true, 125)
+end, opts)
+
+-- <C-b>
+vim.keymap.set(modes, '<C-b>', function()
+	neoscroll.scroll(-vim.api.nvim_win_get_height(0), true, 125)
+end, opts)
+
+-- <C-f>
+vim.keymap.set(modes, '<C-f>', function()
+	neoscroll.scroll(vim.api.nvim_win_get_height(0), true, 125)
+end, opts)

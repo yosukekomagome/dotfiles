@@ -12,5 +12,19 @@ ts.setup({
 		enable = true, -- これを設定することでtree-sitterによるインデントを有効にできます
 		disable = {}, --　一部の言語では向こうにする
 	},
-	ensure_installed = 'all', -- :TSInstall allと同じ
+	ensure_installed = {
+		-- ここにあなたが使う言語を追加・削除してください
+		'lua',
+		'vim',
+		'javascript',
+		'typescript',
+		'tsx',
+		'json',
+		'yaml',
+		'html',
+		'css',
+		'markdown',
+		'bash',
+		'python',
+	},
 })
