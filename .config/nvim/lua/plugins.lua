@@ -39,7 +39,10 @@ packer.startup(function(use)
 	})
 
 	-- LSP
-	use({ 'neovim/nvim-lspconfig' })
+	use({
+		'neovim/nvim-lspconfig',
+		commit = '01e08d4', -- 安定バージョンに固定
+	})
 	use({
 		'williamboman/mason.nvim',
 		commit = 'e2f7f90', -- 正常に動作していたバージョンに固定
@@ -48,9 +51,19 @@ packer.startup(function(use)
 		'williamboman/mason-lspconfig.nvim',
 		commit = '37a336b', -- 正常に動作していたバージョンに固定
 	})
-	use({ 'hrsh7th/nvim-cmp' }) -- 補完エンジン本体
-	use({ 'hrsh7th/cmp-nvim-lsp' }) -- LSPを補完ソースに
-	use({ 'hrsh7th/cmp-buffer' }) -- bufferを補完ソースに
+	use({
+		'hrsh7th/nvim-cmp', -- 補完エンジン本体
+		commit = 'd818fd0', -- 安定バージョンに固定
+	})
+	use({
+		'hrsh7th/cmp-nvim-lsp', -- LSPを補完ソースに
+		commit = '39e2eda', -- 安定バージョンに固定
+	})
+	use({
+		'hrsh7th/cmp-buffer', -- bufferを補完ソースに
+		commit = '3022dbc', -- 安定バージョンに固定
+	})
+
 	use({ 'hrsh7th/cmp-cmdline' }) -- cmdを補完ソースに
 	use({ 'hrsh7th/cmp-path' }) -- pathを補完ソースに
 	use({ 'saadparwaiz1/cmp_luasnip' }) --cmpでLuasnipを使うためのプラグイン
