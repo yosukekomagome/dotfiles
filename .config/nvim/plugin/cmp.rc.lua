@@ -35,6 +35,17 @@ cmp.setup({
 	experimental = {
 		ghost_text = false,
 	},
+
+	-- 補完候補表示時のフローティングウィンドウのボーダースタイル
+	window = {
+		completion = cmp.config.window.bordered({
+			border = 'single',
+		}),
+		documentation = cmp.config.window.bordered({
+			border = 'single',
+		}),
+	},
+
 	-- Lspkind(アイコン)を設定
 	formatting = {
 		format = lspkind.cmp_format({
@@ -69,14 +80,4 @@ cmp.setup.cmdline(':', {
 })
 
 -- 補完候補表示時のフローティングウィンドウのボーダースタイル
-cmp.setup({
-	window = {
-		completion = cmp.config.window.bordered({
-			border = 'single',
-		}),
-		documentation = cmp.config.window.bordered({
-			border = 'single',
-		}),
-	},
-})
--- vim.cmd([[highlight FloatBorder guifg=#05F1f5]])
+vim.cmd([[highlight FloatBorder guifg=#05F1f5]])
