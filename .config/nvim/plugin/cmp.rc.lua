@@ -79,5 +79,9 @@ cmp.setup.cmdline(':', {
 	},
 })
 
+-- autopairs と cmp の連携（重要）
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
 -- 補完候補表示時のフローティングウィンドウのボーダースタイル
 vim.cmd([[highlight FloatBorder guifg=#05F1f5]])

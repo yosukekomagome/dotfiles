@@ -75,8 +75,8 @@ packer.startup(function(use)
 	use({ 'mfussenegger/nvim-lint' })
 
 	-- SNIPET
-	use({ 'hrsh7th/vim-vsnip' }) --スニペットエンジン
-	use({ 'hrsh7th/cmp-vsnip' }) -- vim-vsnipの補完ソース
+	-- use({ 'hrsh7th/vim-vsnip' }) --スニペットエンジン
+	-- use({ 'hrsh7th/cmp-vsnip' }) -- vim-vsnipの補完ソース
 	use({ 'L3MON4D3/LuaSnip' }) -- luaスニペットエンジン
 
 	-- Cursor scroll & UI
