@@ -20,7 +20,8 @@ vim.opt.whichwrap = 'b,s,h,l,[,],<,>,~'
 vim.opt.backspace = { 'start', 'eol', 'indent' }
 
 -- カーソルを中央に
-vim.opt.scrolloff = 999
+-- vim.opt.scrolloff = 999
+vim.opt.scrolloff = 10
 
 -- クリップボード共有
 vim.opt.clipboard:append({ 'unnamedplus' }) -- レジスタとクリップボードを共有
