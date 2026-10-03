@@ -1,6 +1,6 @@
-# -----------------------------------------------
-# インタラクティブ（手動操作）時のみ読み込む設定
-# -----------------------------------------------
+# ==========================================
+# 1. インタラクティブ（手動操作）時のみ読み込む設定
+# ==========================================
 if status is-interactive
   # Commands to run in interactive sessions can go here
   alias vim='nvim'
@@ -15,14 +15,16 @@ if status is-interactive
   abbr -a reload source ~/dotfiles/.config/fish/config.fish
 end
 
-# -----------------------------------------------
-# vimモードとカスタムキーバインドの設定
-# -----------------------------------------------
-
+# ==========================================
+# Vimモードとカスタムキーバインドの設定
+# ==========================================
 function fish_user_key_bindings
-    # 基本のVimモードを有効化
+    # 1. まずVimモードを読み込む
     fish_vi_key_bindings
 
-    # jj でインサートモードを抜ける設定を追加
+    # 2. その後に、インサートモード用の独自設定を「上書き」する（※順番が重要です）
     bind -M insert jj "set fish_bind_mode default; commandline -f backward-char force-repaint"
+    bind -M insert \cf forward-char       # Ctrl + f でサジェスト確定
+    bind -M insert \ef forward-word       # Alt + f で1単語ずつ確定
 end
+
