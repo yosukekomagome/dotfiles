@@ -79,7 +79,7 @@ local keys = {
 	{ key = "j", mods = "LEADER", action = action.ActivatePaneDirection("Down") }, -- Pane移動
 	{ key = "k", mods = "LEADER", action = action.ActivatePaneDirection("Up") }, -- Pane移動
 	{ key = "z", mods = "LEADER", action = action.TogglePaneZoomState }, -- 選択中のPaneのみ表示
-	{ key = "r", mods = "LEADEj", action = action.ReloadConfiguration }, -- 設定ファイルの再読み込み
+	{ key = "r", mods = "LEADER", action = action.ReloadConfiguration }, -- 設定ファイルの再読み込み
 	{ key = "Space", mods = "LEADER", action = action.QuickSelect }, -- 画面内のパスやURLをキーボードで一発コピー
 
 	-- モード移行
@@ -95,9 +95,6 @@ local keys = {
 -- weztermの標準の特殊モード（copy_mode,serch_mode）をそのまま読み込む
 local key_tables = wezterm.gui.default_key_tables()
 
--- 検索モードの Enter をコピーモードへの移行に上書き
-table.insert(key_tables.search_mode, { key = "Enter", mods = "NONE", action = action.ActivateCopyMode })
-
 -- Paneサイズ調整 leader + w
 key_tables.resize_pane = {
 	{ key = "h", action = action.AdjustPaneSize({ "Left", 1 }) },
@@ -107,6 +104,36 @@ key_tables.resize_pane = {
 	{ key = "Escape", action = "PopKeyTable" }, -- モード終了
 	{ key = "Enter", action = "PopKeyTable" }, -- モード終了
 }
+
+-- serch_mode終了、検索パターンクリア
+table.insert(key_tables.search_mode, {
+	key = "Escape",
+	mods = "NONE",
+	action = action.Multiple({ action.CopyMode("ClearPattern"), action.CopyMode("Close") }),
+})
+
+-- ヤンクしたらcopy_mode終了、検索パターンクリア
+table.insert(key_tables.copy_mode, {
+	key = "y",
+	mods = "NONE",
+	action = action.Multiple({
+		action.CopyTo("ClipboardAndPrimarySelection"),
+		action.CopyMode("ClearPattern"),
+		action.ScrollToBottom(),
+		action.CopyMode("Close"),
+	}),
+})
+
+-- ヤンクせずcopy_mode終了、検索パターンクリア
+table.insert(key_tables.copy_mode, {
+	key = "Escape",
+	mods = "NONE",
+	action = action.Multiple({
+		action.CopyMode("ClearPattern"),
+		action.ScrollToBottom(),
+		action.CopyMode("Close"),
+	}),
+})
 
 return {
 	keys = keys,
