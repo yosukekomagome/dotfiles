@@ -119,7 +119,7 @@ table.insert(key_tables.copy_mode, {
 	action = action.Multiple({
 		action.CopyTo("ClipboardAndPrimarySelection"),
 		action.CopyMode("ClearPattern"),
-		action.ScrollToBottom(),
+		action.ScrollToBottom,
 		action.CopyMode("Close"),
 	}),
 })
@@ -130,7 +130,7 @@ table.insert(key_tables.copy_mode, {
 	mods = "NONE",
 	action = action.Multiple({
 		action.CopyMode("ClearPattern"),
-		action.ScrollToBottom(),
+		action.ScrollToBottom,
 		action.CopyMode("Close"),
 	}),
 })
