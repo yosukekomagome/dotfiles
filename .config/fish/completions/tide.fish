@@ -11,5 +11,3 @@ complete tide -x -n "not __fish_seen_subcommand_from $subcommands" -s v -l versi
 
 complete tide -x -n '__fish_seen_subcommand_from bug-report' -l clean -d "Run clean Fish instance and install Tide"
 complete tide -x -n '__fish_seen_subcommand_from bug-report' -l verbose -d "Print full Tide configuration"
-
-
