@@ -6,11 +6,18 @@ config.font_size = 15.0
 config.use_ime = true
 config.window_background_opacity = 0.60
 config.macos_window_background_blur = 15
--- config.color_scheme = "Tokyo Night"
 config.color_scheme = "Solarized Dark - Patched"
 
 ----------------------------------------------------
--- Tab
+-- ペインの見た目（非アクティブ状態のスタイル）
+----------------------------------------------------
+config.inactive_pane_hsb = {
+	saturation = 1.0, -- 彩度（1.0が元の色。数値を下げると白黒に近づく）
+	brightness = 0.4, -- 明度（1.0が元の明るさ。数値を下げると暗くなる）
+}
+
+----------------------------------------------------
+-- タブバーのカスタマイズ
 ----------------------------------------------------
 
 -- タイトルバーを非表示
@@ -43,7 +50,6 @@ config.show_close_tab_button_in_tabs = false
 config.colors = {
 	tab_bar = {
 		inactive_tab_edge = "none",
-		-- background = "none",
 	},
 }
 
@@ -85,6 +91,20 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 		{ Text = SOLID_RIGHT_ARROW },
 	}
 end)
+
+----------------------------------------------------
+-- カーソルのスタイルの指定
+----------------------------------------------------
+
+-- cursorを点滅させる
+config.default_cursor_style = "BlinkingBlock"
+
+-- cursorの点滅スピード
+config.cursor_blink_rate = 500
+
+-- cursorのフェードアニメーションを無効化（パキッと点滅）
+config.cursor_blink_ease_in = "Constant"
+config.cursor_blink_ease_out = "Constant"
 
 ----------------------------------------------------
 -- keybinds
