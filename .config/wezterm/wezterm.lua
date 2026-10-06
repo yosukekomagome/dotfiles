@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 config.automatically_reload_config = true
 config.font_size = 15.0
 config.use_ime = true
-config.window_background_opacity = 0.80
+config.window_background_opacity = 0.60
 config.macos_window_background_blur = 15
 -- config.color_scheme = "Tokyo Night"
 config.color_scheme = "Solarized Dark - Patched"
@@ -95,5 +95,14 @@ config.disable_default_key_bindings = true
 config.keys = keybinds.keys
 config.key_tables = keybinds.key_tables
 config.leader = keybinds.leader
+
+----------------------------------------------------
+-- バックグランド保持（Multiplexer）の設定
+----------------------------------------------------
+-- 'unix_local'という名前のローカルドメイン（バックグランドプロセス）を定義
+config.unix_domains = { { name = "unix_local" } }
+
+-- WerTerm起動時に、自動的にこのバックグランドプロセスに接続（アタッチ）する
+config.default_gui_startup_args = { "connect", "unix_local" }
 
 return config

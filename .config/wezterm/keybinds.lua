@@ -81,6 +81,7 @@ local keys = {
 	{ key = "z", mods = "LEADER", action = action.TogglePaneZoomState }, -- 選択中のPaneのみ表示
 	{ key = "r", mods = "LEADER", action = action.ReloadConfiguration }, -- 設定ファイルの再読み込み
 	{ key = "Space", mods = "LEADER", action = action.QuickSelect }, -- 画面内のパスやURLをキーボードで一発コピー
+	{ key = "d", mods = "LEADER", action = action.DetachDomain("CurrentPaneDomain") }, -- デタッチ（裏でプロセスを動かしたまま画面を切り離す）
 
 	-- モード移行
 	{ key = "w", mods = "LEADER", action = action.ActivateKeyTable({ name = "resize_pane", one_shot = false }) }, -- resize_paneモード入る
