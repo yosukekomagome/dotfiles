@@ -1,0 +1,5 @@
+[open]
+prepend_rules = [
+    { url = "**/*.csv", use = [ "open", "edit" ] },
+    { url = "**/*.xlsx", use = [ "open", "reveal" ] }
+]
