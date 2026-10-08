@@ -18,6 +18,8 @@ end
 # ==========================================
 # Vimモードとカスタムキーバインドの設定
 # ==========================================
+# 一度有効化してから解除するとグローバル環境変数に書き込みされて解除できないので注意
+# vimモードの解除には環境変数自体も再度描き戻す必要あり
 # function fish_user_key_bindings
 #     # 1. まずVimモードを読み込む
 #     fish_vi_key_bindings
@@ -28,3 +30,33 @@ end
 #     bind -M insert \ef forward-word       # Alt + f で1単語ずつ確定
 # end
 
+
+# ディレクトリ移動の短縮化プラグインの初期設定
+zoxide init fish | source
+
+
+# ==========================================
+# タイポやスペース始まりのコマンドを履歴から消す（Sponge代替）
+# ==========================================
+function _clean_history_on_postexec --on-event fish_postexec
+    set -l last_status $status
+    set -l cmd $argv[1]
+
+    # コマンドの先頭がスペースの場合、または実行に失敗（エラー）した場合
+    if string match -q -r '^\s' "$cmd"; or test $last_status -ne 0
+        # 履歴から該当のコマンドを正確に削除する
+        history delete --exact --case-sensitive "$cmd"
+    end
+end
+
+# ==========================================
+# Yazi (ファイラー) 連携設定
+# ==========================================
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
+end

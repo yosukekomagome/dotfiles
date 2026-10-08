@@ -2,3 +2,30 @@
 fish_variables
 node_modules
 fishd.tmp.*
+
+# Fisher plugins (自動生成されるため除外)
+# fish/completions/fzf_*.fish
+# fish/conf.d/fzf.fish
+# fish/conf.d/autopair.fish
+# fish/functions/_autopair_*.fish
+# fish/functions/_fzf_*.fish
+# fish/functions/fzf_*.fish
+
+
+
+# ==========================================
+# Fish / Fisher Plugins
+# ==========================================
+# 1. 一旦、Fisherが汚染するフォルダの中身をすべて無視する
+**/fish/functions/*
+**/fish/conf.d/*
+**/fish/completions/*
+
+# 2. ただし、自分が作成・管理したいファイルは「!」で無視を取り消す（ホワイトリスト）
+# （※現在Gitで管理したい自作ファイルがあれば、ここに追記していきます）
+# !fish/functions/my_function.fish
+# !fish/conf.d/my_aliases.fish
+!**/fish/functions/ide.fish
+
+# 3. Fisherのプラグインリスト自体は絶対にGit管理するので例外とする
+!**/fish/fish_plugins
