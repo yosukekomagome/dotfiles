@@ -43,7 +43,6 @@ brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide imagemagick
 
 ## 3. fishシェルとの連携
 
----
 
 ### 3.1 ディレクトリ同期のラッパー関数設定
 
@@ -69,7 +68,6 @@ end
 
 ## 4. Yaziの詳細設定（CSV/Excel等のファイル展開ルール）
 
----
 
 CSVやExcelファイルをmacOSのデフォルトアプリケーションで開くように設定する。
 
@@ -103,7 +101,6 @@ prepend_rules = [
 
 ## 5. smart-enterプラグインの導入（直感的な操作）
 
----
 
 デフォルトでは `Enter` はファイルを開く操作、`l` はディレクトリに入る操作として設定されている。
 
@@ -143,7 +140,6 @@ Yazi v26.9.1では `[[mgr.prepend_keymap]]` を使用する。
 
 ## 6. 基本的な使い方と検索TIPS
 
----
 
 設定完了後、以下のコマンドでYaziを起動する。
 
