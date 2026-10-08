@@ -28,8 +28,3 @@ end
 #     bind -M insert \ef forward-word       # Alt + f で1単語ずつ確定
 # end
 
-# starshipのconfigファイルのデフォルトパス(.config/starship.toml)を変更
-# set -gx STARSHIP_CONFIG ~/.config/starship/starship.toml
-
-# starship初期化
-# starship init fish | source

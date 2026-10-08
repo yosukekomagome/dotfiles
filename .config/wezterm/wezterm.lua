@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+require("status_format")
 
 config.automatically_reload_config = true
 config.font_size = 15.0
@@ -7,6 +8,7 @@ config.use_ime = true
 config.window_background_opacity = 0.60
 config.macos_window_background_blur = 15
 config.color_scheme = "Solarized Dark - Patched"
+config.font = wezterm.font("Hack Nerd Font")
 
 ----------------------------------------------------
 -- ペインの見た目（非アクティブ状態のスタイル）
@@ -36,9 +38,7 @@ config.window_frame = {
 }
 
 -- タブバーを背景色に合わせる
-config.window_background_gradient = {
-	colors = { "#000000" },
-}
+config.window_background_gradient = { colors = { "#000000" } }
 
 -- タブの追加ボタンを非表示
 config.show_new_tab_button_in_tab_bar = false
@@ -47,11 +47,7 @@ config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
 
 -- タブ同士の境界線を非表示
-config.colors = {
-	tab_bar = {
-		inactive_tab_edge = "none",
-	},
-}
+config.colors = { tab_bar = { inactive_tab_edge = "none" } }
 
 -- タブバーを画面下部に配置する
 config.tab_bar_at_bottom = false
