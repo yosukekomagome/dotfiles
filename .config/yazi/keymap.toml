@@ -1,9 +1,39 @@
+# smart-enterプラグイン用の設定
 [[mgr.prepend_keymap]]
 on   = "<Enter>"
 run  = "plugin smart-enter"
 desc = "Enter the directory, or open the file"
-
 [[mgr.prepend_keymap]]
 on   = "l"
 run  = "plugin smart-enter"
 desc = "Enter the directory, or open the file"
+
+# gitルートディレクトリへ移動
+[[mgr.prepend_keymap]]
+on =  "w"
+run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
+desc = "Go to Git repository root"
+
+# ホームディレクトリへ移動
+[[mgr.prepend_keymap]]
+on   = "e"
+run  = "cd ~"
+desc = "Go to home directory"
+
+# neovim telescope風にiで検索窓を入力可能にする
+[[mgr.prepend_keymap]]
+on   = "i"
+run  = "filter --smart"
+desc = "Find files (Insert-style)"
+
+# CWDを同期せずに終了
+[[mgr.prepend_keymap]]
+on   = "q"
+run  = "quit --no-cwd-file"
+desc = "Quit without changing CWD"
+
+# 終了時にCWDを同期
+[[mgr.prepend_keymap]]
+on   = "Q"
+run  = "quit"
+desc = "Quit and change CWD"
