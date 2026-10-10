@@ -10,7 +10,8 @@ if status is-interactive
 
 
   # 最新のNeovimの起動する、nvim-lazyvimフォルダを参照する設定
-  alias lvim="env NVIM_APPNAME=nvim-lazyvim mise exec neovim@latest -- nvim"
+  # alias lvim="env NVIM_APPNAME=nvim-lazyvim mise exec neovim@latest -- nvim"
+  alias lvim="env NVIM_APPNAME=nvim-lazyvim MISE_CONFIG_FILE=$HOME/.config/nvim-lazyvim/mise/mise.toml mise exec neovim -- nvim"
   abbr -a glog git log --graph --oneline --all
   abbr -a reload source ~/dotfiles/.config/fish/config.fish
 end
