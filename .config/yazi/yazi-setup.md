@@ -172,3 +172,12 @@ y
 | `S`**（Search contents）** | ripgrep | ファイルの中身 | 特定の文字列を含むファイルを探す |
 | `z` | fzf | 現在の場所以下のファイル・フォルダ | 候補を絞って素早く移動する |
 | `Z` | zoxide + fzf | 過去に訪れたフォルダ | よく使う作業フォルダへジャンプする |
+
+### 6.3 マルチタブ
+- **t ⇒ t**: Create a new tab in CWD
+- **1, 2, ..., 9: Switch to the N-th tab
+- **[** Switch to the previous tab
+- **]i** Switch to the next tab
+- **{** Swap current tab with previous tab
+- **}** Swap current tab with next tab
+- **Ctrl + c** Close the current tab
