@@ -103,6 +103,17 @@ config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 
 ----------------------------------------------------
+-- search/copyモード時の選択箇所ハイライトカラーを追加
+----------------------------------------------------
+
+-- config.colors がまだ定義されていない場合のエラーを防ぐ記述
+config.colors = config.colors or {}
+
+-- 選択箇所ハイライトカラー指定
+config.colors.selection_bg = "#ffcc00"
+config.colors.selection_fg = "#000000"
+
+----------------------------------------------------
 -- keybinds
 ----------------------------------------------------
 local keybinds = require("keybinds")
