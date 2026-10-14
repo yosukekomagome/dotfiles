@@ -17,7 +17,7 @@ local keys = {
 	{ key = "+", mods = "SUPER", action = action.IncreaseFontSize }, -- フォントサイズ拡大
 	{ key = "-", mods = "SUPER", action = action.DecreaseFontSize }, -- フォントサイズ縮小
 	{ key = "0", mods = "SUPER", action = action.ResetFontSize }, -- フォントサイズリセット
-
+	{ key = "N", mods = "SHIFT|CTRL", action = action.SpawnWindow }, -- 新規ウィンドウ作成
 	-- leaderキーを使うキー
 	{ key = "c", mods = "LEADER", action = action.SpawnTab("CurrentPaneDomain") }, -- 新しいTabを開く
 	{ key = "n", mods = "LEADER", action = action.ActivateTabRelative(1) }, -- 次のタブへ（相対的移動）
