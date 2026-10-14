@@ -110,8 +110,8 @@ config.cursor_blink_ease_out = "Constant"
 config.colors = config.colors or {}
 
 -- 選択箇所ハイライトカラー指定
-config.colors.selection_bg = "#ffcc00"
-config.colors.selection_fg = "#000000"
+config.colors.selection_bg = "#003b00"
+config.colors.selection_fg = "#00ff00"
 
 ----------------------------------------------------
 -- keybinds
