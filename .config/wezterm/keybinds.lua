@@ -50,10 +50,14 @@ local key_tables = wezterm.gui.default_key_tables()
 
 -- Paneサイズ調整 leader + w
 key_tables.resize_pane = {
-	{ key = "h", action = action.AdjustPaneSize({ "Left", 1 }) },
-	{ key = "l", action = action.AdjustPaneSize({ "Right", 1 }) },
-	{ key = "j", action = action.AdjustPaneSize({ "Down", 1 }) },
-	{ key = "k", action = action.AdjustPaneSize({ "Up", 1 }) },
+	-- { key = "h", action = action.AdjustPaneSize({ "Left", 1 }) },
+	-- { key = "l", action = action.AdjustPaneSize({ "Right", 1 }) },
+	-- { key = "j", action = action.AdjustPaneSize({ "Down", 1 }) },
+	-- { key = "k", action = action.AdjustPaneSize({ "Up", 1 }) },
+	{ key = "LeftArrow", action = action.AdjustPaneSize({ "Left", 1 }) },
+	{ key = "RightArrow", action = action.AdjustPaneSize({ "Right", 1 }) },
+	{ key = "DownArrow", action = action.AdjustPaneSize({ "Down", 1 }) },
+	{ key = "UpArrow", action = action.AdjustPaneSize({ "Up", 1 }) },
 	{ key = "Escape", action = "PopKeyTable" }, -- モード終了
 	{ key = "Enter", action = "PopKeyTable" }, -- モード終了
 }
