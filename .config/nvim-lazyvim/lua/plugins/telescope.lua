@@ -5,6 +5,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-mini/mini.pairs", -- ここでロードしないと動作しなくなる、telescopeとの競合回避
     },
 
     opts = function(_, opts)
