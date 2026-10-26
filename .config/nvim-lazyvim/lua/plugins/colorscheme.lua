@@ -16,6 +16,12 @@ return {
 
         -- lspsaga border color
         hl.SagaBorder = { fg = c.blue }
+
+        -- Bufferline transparency
+        hl.TabLineFill = {
+          bg = "NONE",
+          nocombine = true,
+        }
       end,
       transparent = true,
       styles = {
