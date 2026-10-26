@@ -22,6 +22,30 @@ return {
           bg = "NONE",
           nocombine = true,
         }
+
+        -- LSP reference highlight
+        hl.LspReferenceText = { bg = "#000080" }
+        hl.LspReferenceRead = { bg = "#000080" }
+        hl.LspReferenceWrite = { bg = "#000080" }
+
+        -- LSP hover border color
+        hl.NoiceHoverBorder = {
+          fg = c.blue,
+          bg = "NONE",
+        }
+
+        -- 検索ハイライト
+        hl.Search = {
+          fg = "#00ff00",
+          bg = "#003b00",
+        }
+
+        -- 現在カーソルがある検索一致箇所
+        hl.CurSearch = {
+          fg = "#003b00",
+          bg = "#00ff00",
+          bold = true,
+        }
       end,
       transparent = true,
       styles = {

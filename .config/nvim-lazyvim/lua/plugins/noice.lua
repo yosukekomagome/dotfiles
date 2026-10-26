@@ -21,6 +21,20 @@ return {
         },
         bottom_search = false,
       },
+
+      -- ctrl+KのLSPホバーのスタイルとカラー指定
+      views = {
+        hover = {
+          border = {
+            style = "rounded",
+          },
+          win_options = {
+            winhighlight = {
+              FloatBorder = "NoiceHoverBorder",
+            },
+          },
+        },
+      },
     },
   },
 }
