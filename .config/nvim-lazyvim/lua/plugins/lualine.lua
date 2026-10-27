@@ -18,6 +18,8 @@ return {
       }
 
       opts.sections.lualine_x = {
+        "searchcount",
+
         -- Diagnostics
         {
           "diagnostics",
