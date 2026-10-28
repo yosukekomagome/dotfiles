@@ -39,6 +39,9 @@ local keys = {
 	{ key = "w", mods = "LEADER", action = action.ActivateKeyTable({ name = "resize_pane", one_shot = false }) }, -- resize_paneモード入る
 	{ key = "[", mods = "LEADER", action = action.ActivateCopyMode }, -- copy_modeへ入る
 	{ key = "/", mods = "LEADER", action = action.Search({ CaseInSensitiveString = "" }) }, -- serch_modeに入る
+
+	-- デバッグモード実行
+	{ key = "L", mods = "CTRL", action = action.ShowDebugOverlay },
 }
 
 ----------------------------------------------------
