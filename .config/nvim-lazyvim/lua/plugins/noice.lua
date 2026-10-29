@@ -35,6 +35,13 @@ return {
           },
         },
       },
+      lsp = {
+        signature = {
+          opts = {
+            position = { row = 2, col = 0 },
+          },
+        },
+      },
     },
   },
 }
