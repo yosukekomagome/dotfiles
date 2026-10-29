@@ -33,6 +33,9 @@ return {
     end,
 
     opts = {
+      inlay_hints = {
+        enabled = false, -- LSPが解析した型情報や引数名をコード上に補助表示する機能OFF
+      },
       servers = {
         ["*"] = {
           keys = {
