@@ -14,7 +14,7 @@ return {
         ---@diagnostic disable-next-line: assign-type-mismatch
         LazyVim.lualine.root_dir({ cwd = true }),
         { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-        { "filename", path = 0, separator = "" },
+        { "filename", path = 0, separator = "", symbols = { modified = "" } },
       }
 
       opts.sections.lualine_x = {

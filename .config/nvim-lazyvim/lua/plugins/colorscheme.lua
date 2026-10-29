@@ -34,23 +34,27 @@ return {
           bg = "NONE",
         }
 
-        -- 検索ハイライト
+        -- Search Mode Inactive highlight
         hl.Search = {
           fg = "#00ff00",
           bg = "#003b00",
         }
 
-        -- 現在カーソルがある検索一致箇所
+        -- Search Mode active highlight
         hl.CurSearch = {
           fg = "#003b00",
           bg = "#00ff00",
           bold = true,
         }
 
-        -- blink.cmpのハイライト
+        -- blink.cmp highlight
         hl.BlinkCmpMenuBorder = { fg = c.blue }
         hl.BlinkCmpMenuSelection = { bg = c.bg_highlight }
         hl.BlinkCmpDocBorder = { fg = c.blue }
+
+        -- Incline highlight
+        hl.InclineNormal = { fg = c.base01, bg = "#000080" }
+        hl.InclineNormalNC = { fg = c.base01, bg = "NONE" }
       end,
       transparent = true,
       styles = {
