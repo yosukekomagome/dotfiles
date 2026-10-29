@@ -38,7 +38,7 @@ return {
       lsp = {
         signature = {
           opts = {
-            position = { row = 2, col = 0 },
+            position = { row = 2, col = 0 }, -- シグネチャヘルプ表示位置調整、これがないとヘルプのウィンドウでコードが隠れる
           },
         },
       },
