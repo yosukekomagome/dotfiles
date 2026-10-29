@@ -25,6 +25,12 @@ vim.keymap.set("n", "sk", "<C-w>k", { desc = "Focus Upper Window" })
 vim.keymap.set("n", "<C-n>", "<Cmd>bnext<CR>", { desc = "Next Buffer" })
 vim.keymap.set("n", "<C-p>", "<Cmd>bprev<CR>", { desc = "Previous Buffer" })
 
+-- tab
+vim.keymap.set("n", "<Tab>", ":tabnext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "<S-Tab>", ":tabprev<CR>", { desc = "Next previous" })
+vim.keymap.set("n", "te", ":tabedit<CR>", { desc = "Open tab" })
+vim.keymap.set("n", "tx", ":tabclose<CR>", { desc = "Colse tab" })
+
 -- Do not yank with x
 vim.keymap.set("n", "x", '"_x', { desc = "Delete without yank" })
 
@@ -37,6 +43,10 @@ vim.keymap.set("n", "<S-right>", "<C-w>>", { desc = "Increase Window Width" })
 vim.keymap.set("n", "<S-up>", "<C-w>+", { desc = "Increase Window Height" })
 vim.keymap.set("n", "<S-down>", "<C-w>-", { desc = "Decrease Window Height" })
 vim.keymap.set("n", "=", "<C-w>=", { desc = "Equalize Window Sizes" })
+
+-- 画面上のカーソル位置を固定したままテキストをスクロールする
+-- vim.keymap.set("n", "<C-k>", "<C-y>k", { desc = "Scroll up keeping cursor in place" })
+-- vim.keymap.set("n", "<C-j>", "<C-e>j", { desc = "Scroll down keeping cursor in place" })
 
 --------------------------------------------------
 -- Snacks.Picker Keybind
