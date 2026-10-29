@@ -46,6 +46,11 @@ return {
           bg = "#00ff00",
           bold = true,
         }
+
+        -- blink.cmpのハイライト
+        hl.BlinkCmpMenuBorder = { fg = c.blue }
+        hl.BlinkCmpMenuSelection = { bg = c.bg_highlight }
+        hl.BlinkCmpDocBorder = { fg = c.blue }
       end,
       transparent = true,
       styles = {

@@ -68,3 +68,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end)
   end,
 })
+
+-- blink.cmpの補完メニュー背景を透過する
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("user_blink_transparent", { clear = true }),
+  pattern = "BlinkCmpMenuOpen",
+  callback = function()
+    vim.api.nvim_set_hl(0, "BlinkCmpMenu", {})
+  end,
+})
