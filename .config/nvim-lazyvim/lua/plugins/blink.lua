@@ -21,6 +21,17 @@ return {
         ["<Tab>"] = { "accept", "snippet_forward", "fallback" },
         ["<CR>"] = { "fallback" },
       },
+
+      -- コマンドライン補完時のキーバインド
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+          ["<C-j>"] = { "select_next", "fallback" },
+          ["<C-k>"] = { "select_prev", "fallback" },
+          ["<Tab>"] = { "select_and_accept", "fallback" },
+          ["<CR>"] = { "select_accept_and_enter", "fallback" },
+        },
+      },
     },
   },
 }
