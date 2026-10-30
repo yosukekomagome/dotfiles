@@ -52,6 +52,10 @@ vim.keymap.set("n", "<C-j>", "<C-e>j", { desc = "Scroll down keeping cursor in p
 vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
 vim.keymap.set("n", "<C-r>", "<Nop>", { desc = "Disable Ctrl+r" })
 
+-- Increment/Decrement
+vim.keymap.set("n", "+", "<C-a>", { desc = "Increment" })
+vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement" })
+
 --------------------------------------------------
 -- Snacks.Picker Keybind
 --------------------------------------------------
@@ -91,7 +95,7 @@ end, { desc = "Snacks Workspace Symbols" })
 --------------------------------------------------
 -- Telescope file_browser
 --------------------------------------------------
-vim.keymap.set("n", "sf", function()
+vim.keymap.set("n", ";e", function()
   local filename = vim.api.nvim_buf_get_name(0)
 
   local dir = filename ~= "" and vim.fn.fnamemodify(filename, ":p:h") or vim.fn.getcwd()
