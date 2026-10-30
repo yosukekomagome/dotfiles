@@ -14,3 +14,6 @@ vim.opt.whichwrap:append("h,l,<,>,[,]")
 
 -- j,kでスクロール次に確保する上下の余白
 vim.opt.scrolloff = 10
+
+-- 永続Undo無効
+vim.opt.undofile = false

@@ -45,8 +45,12 @@ vim.keymap.set("n", "<S-down>", "<C-w>-", { desc = "Decrease Window Height" })
 vim.keymap.set("n", "=", "<C-w>=", { desc = "Equalize Window Sizes" })
 
 -- 画面上のカーソル位置を固定したままテキストをスクロールする
--- vim.keymap.set("n", "<C-k>", "<C-y>k", { desc = "Scroll up keeping cursor in place" })
--- vim.keymap.set("n", "<C-j>", "<C-e>j", { desc = "Scroll down keeping cursor in place" })
+vim.keymap.set("n", "<C-k>", "<C-y>k", { desc = "Scroll up keeping cursor in place" })
+vim.keymap.set("n", "<C-j>", "<C-e>j", { desc = "Scroll down keeping cursor in place" })
+
+-- undo/redo
+vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
+vim.keymap.set("n", "<C-r>", "<Nop>", { desc = "Disable Ctrl+r" })
 
 --------------------------------------------------
 -- Snacks.Picker Keybind
