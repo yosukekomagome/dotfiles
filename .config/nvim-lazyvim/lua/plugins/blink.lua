@@ -19,6 +19,7 @@ return {
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<Tab>"] = { "accept", "snippet_forward", "fallback" },
+        ["<CR>"] = { "fallback" },
       },
     },
   },
