@@ -8,7 +8,11 @@ config.use_ime = true
 config.window_background_opacity = 0.60
 config.macos_window_background_blur = 15
 config.color_scheme = "Solarized Dark - Patched"
-config.font = wezterm.font("Hack Nerd Font")
+config.font = wezterm.font_with_fallback({
+	"Hack Nerd Font",
+	"HackGen", --日本語にフォールバックした場合のフォント
+	"Apple Color Emoji", -- 絵文字のフォールバック用（任意）
+})
 
 ----------------------------------------------------
 -- ペインの見た目（非アクティブ状態のスタイル）
