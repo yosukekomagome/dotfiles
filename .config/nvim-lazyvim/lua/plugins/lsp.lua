@@ -37,6 +37,9 @@ return {
         enabled = false, -- LSPが解析した型情報や引数名をコード上に補助表示する機能OFF
       },
       servers = {
+        -- Markdown LSP
+        marksman = {},
+
         ["*"] = {
           keys = {
             -- 定義、実装、参照ジャンプをlspsagaで実行する場合の設定
