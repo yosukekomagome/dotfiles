@@ -4,23 +4,23 @@
 
 本書は、LazyVim環境で使用する **lazy.nvim** のプラグイン管理コマンド、`lazy-lock.json` の役割、更新・検証・復元の手順を定める。
 
-- 対象：`lvim` で起動する独立したLazyVim環境（`NVIM_APPNAME=nvim-lazyvim`）
-- 設定：`~/.config/nvim-lazyvim/`（dotfilesから管理）
-- プラグイン実体：`~/.local/share/nvim-lazyvim/lazy/`
-- ロックファイル：`~/.config/nvim-lazyvim/lazy-lock.json`
+- 対象：標準の `nvim` で起動するLazyVim環境
+- 設定：`~/.config/nvim/`（dotfilesで管理）
+- プラグイン実体：`~/.local/share/nvim/lazy/`
+- ロックファイル：`~/.config/nvim/lazy-lock.json`
+- Neovim本体：miseで管理（`~/.config/mise/config.toml`）
 - Git管理リポジトリ：`~/dotfiles`
-- 既存のPacker版Neovim（`nvim`）は対象外とし、そのプラグインは更新しない。
 
 **基本方針：プラグイン更新前にロックファイルのGit状態を確定し、更新後の動作確認が済んでからロックファイルをコミットする。**
 
 ## 2. 管理対象と役割
 
-| 対象 | 役割 | Gitで管理するか |
-| --- | --- | --- |
-| `lua/plugins/*.lua` など | プラグインの導入・オプション・依存関係を定義 | 管理する |
-| `lazyvim.json` | LazyVim Extrasの選択など | 管理する |
-| `lazy-lock.json` | プラグインごとのGitリビジョン（コミットID等）を記録 | **管理する** |
-| `~/.local/share/nvim-lazyvim/lazy/` | インストール済みプラグインの実体 | 通常は管理しない |
+| 対象                        | 役割                                                | Gitで管理するか  |
+| --------------------------- | --------------------------------------------------- | ---------------- |
+| `lua/plugins/*.lua` など    | プラグインの導入・オプション・依存関係を定義        | 管理する         |
+| `lazyvim.json`              | LazyVim Extrasの選択など                            | 管理する         |
+| `lazy-lock.json`            | プラグインごとのGitリビジョン（コミットID等）を記録 | **管理する**     |
+| `~/.local/share/nvim/lazy/` | インストール済みプラグインの実体                    | 通常は管理しない |
 
 `lazy-lock.json` は**過去の履歴を保存するバックアップファイルではない**。現在記録されているプラグインのリビジョン一覧であり、更新すると内容も変わる。過去の状態はGit履歴で保存する。
 
@@ -30,21 +30,21 @@
 
 以下はLazyVim上のNeovimコマンドラインで実行する（先頭の `:` を含めて入力）。`[plugins]` は対象プラグインを絞るための任意引数。
 
-| コマンド | 動作 | 主な用途・注意点 |
-| --- | --- | --- |
-| `:Lazy` | プラグイン管理UIを開く | 状態や実行結果の確認 |
-| `:Lazy check` | 更新の有無を確認し、更新ログを表示する | **更新候補の確認**。インストール済みリビジョンの更新は行わない |
-| `:Lazy update` | プラグインを更新し、ロックファイルも更新する | 日常のバージョン更新 |
-| `:Lazy update {plugin}` | 指定プラグインを更新する | 影響範囲を絞った更新 |
-| `:Lazy restore` | **現在のロックファイル**に記録されたリビジョンへ戻す | 更新前に戻すには先にロックファイルをGitで戻す |
-| `:Lazy restore {plugin}` | 指定プラグインをロックファイル記録の状態へ復元する | 単一プラグインの復元 |
-| `:Lazy install` | 不足しているプラグインをインストールする | 新規追加や環境構築 |
-| `:Lazy clean` | 現在の設定で不要なプラグインを削除する | 設定から削除したプラグインの整理。実行対象を確認する |
-| `:Lazy sync` | `install`・`clean`・`update` をまとめて実行する | **更新も行う**ため、単なる復元目的で使わない |
-| `:Lazy log` | 最近のプラグイン更新履歴を確認する | 更新内容の調査 |
-| `:Lazy build {plugin}` | プラグインのビルド処理を実行する | ビルドが必要なプラグインの再構築 |
-| `:Lazy health` | lazy.nvimのヘルスチェックを実行する | トラブルシューティング |
-| `:Lazy profile` | 読み込み処理のプロファイルを確認する | 起動パフォーマンスの調査 |
+| コマンド                 | 動作                                                 | 主な用途・注意点                                               |
+| ------------------------ | ---------------------------------------------------- | -------------------------------------------------------------- |
+| `:Lazy`                  | プラグイン管理UIを開く                               | 状態や実行結果の確認                                           |
+| `:Lazy check`            | 更新の有無を確認し、更新ログを表示する               | **更新候補の確認**。インストール済みリビジョンの更新は行わない |
+| `:Lazy update`           | プラグインを更新し、ロックファイルも更新する         | 日常のバージョン更新                                           |
+| `:Lazy update {plugin}`  | 指定プラグインを更新する                             | 影響範囲を絞った更新                                           |
+| `:Lazy restore`          | **現在のロックファイル**に記録されたリビジョンへ戻す | 更新前に戻すには先にロックファイルをGitで戻す                  |
+| `:Lazy restore {plugin}` | 指定プラグインをロックファイル記録の状態へ復元する   | 単一プラグインの復元                                           |
+| `:Lazy install`          | 不足しているプラグインをインストールする             | 新規追加や環境構築                                             |
+| `:Lazy clean`            | 現在の設定で不要なプラグインを削除する               | 設定から削除したプラグインの整理。実行対象を確認する           |
+| `:Lazy sync`             | `install`・`clean`・`update` をまとめて実行する      | **更新も行う**ため、単なる復元目的で使わない                   |
+| `:Lazy log`              | 最近のプラグイン更新履歴を確認する                   | 更新内容の調査                                                 |
+| `:Lazy build {plugin}`   | プラグインのビルド処理を実行する                     | ビルドが必要なプラグインの再構築                               |
+| `:Lazy health`           | lazy.nvimのヘルスチェックを実行する                  | トラブルシューティング                                         |
+| `:Lazy profile`          | 読み込み処理のプロファイルを確認する                 | 起動パフォーマンスの調査                                       |
 
 `:Lazy check` はリモートから更新情報を取得する処理を含む。`check` の実行は、`update` と異なりプラグインのチェックアウト先を更新する操作ではない。
 
@@ -75,8 +75,8 @@ Gitに保存した旧 lazy-lock.json（バージョンA）
 ターミナル（fish）で実行する。
 
 ```fish
-git -C ~/dotfiles status --short -- .config/nvim-lazyvim/lazy-lock.json
-git -C ~/dotfiles diff -- .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles status --short -- .config/nvim/lazy-lock.json
+git -C ~/dotfiles diff -- .config/nvim/lazy-lock.json
 ```
 
 出力がなければ、ロックファイルの作業ツリーに未コミット変更はない。すでに変更がある場合は、その変更を検証・コミットするか、意図を確認してから破棄する。**理由がわからない差分をそのまま破棄しない。**
@@ -85,7 +85,7 @@ git -C ~/dotfiles diff -- .config/nvim-lazyvim/lazy-lock.json
 
 ### 5.2 更新候補を確認
 
-LazyVimを `lvim` で起動し、次を実行する。
+LazyVimを `nvim` で起動し、次を実行する。
 
 ```vim
 :Lazy check
@@ -129,7 +129,7 @@ LazyVimを `lvim` で起動し、次を実行する。
 
 ```fish
 git -C ~/dotfiles diff --check
-git -C ~/dotfiles diff -- .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles diff -- .config/nvim/lazy-lock.json
 ```
 
 更新対象が意図どおりであることを確認する。
@@ -137,7 +137,7 @@ git -C ~/dotfiles diff -- .config/nvim-lazyvim/lazy-lock.json
 ### 6.4 Gitコミット
 
 ```fish
-git -C ~/dotfiles add .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles add .config/nvim/lazy-lock.json
 git -C ~/dotfiles diff --cached --check
 git -C ~/dotfiles diff --cached
 git -C ~/dotfiles commit -m "chore(lazyvim): プラグインのバージョンを更新"
@@ -154,14 +154,14 @@ git -C ~/dotfiles commit -m "chore(lazyvim): プラグインのバージョン�
 LazyVimを終了してから、ターミナルで実行する。
 
 ```fish
-git -C ~/dotfiles restore -- .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles restore -- .config/nvim/lazy-lock.json
 ```
 
 このコマンドは未コミットのロックファイル変更を破棄する。ほかの未コミット変更を残したい場合は、先に退避・確認する。
 
 ### 7.2 プラグイン実体を戻す
 
-再度 `lvim` で起動し、次を実行する。
+再度 `nvim` で起動し、次を実行する。
 
 ```vim
 :Lazy restore
@@ -174,16 +174,16 @@ git -C ~/dotfiles restore -- .config/nvim-lazyvim/lazy-lock.json
 戻したい過去のコミットを確認する。
 
 ```fish
-git -C ~/dotfiles log --oneline -- .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles log --oneline -- .config/nvim/lazy-lock.json
 ```
 
 目的のコミットが決まったら、その時点のロックファイルを作業ツリーへ取り出す。
 
 ```fish
-git -C ~/dotfiles restore --source=<復元したいコミットID> -- .config/nvim-lazyvim/lazy-lock.json
+git -C ~/dotfiles restore --source=<復元したいコミットID> -- .config/nvim/lazy-lock.json
 ```
 
-次に `lvim` で `:Lazy restore` を実行する。復元後の状態を採用するなら、そのロックファイルも新しいコミットとして記録する。`git reset --hard` は無関係な変更まで破棄するため、通常の復元手順では使用しない。
+次に `nvim` で `:Lazy restore` を実行する。復元後の状態を採用するなら、そのロックファイルも新しいコミットとして記録する。`git reset --hard` は無関係な変更まで破棄するため、通常の復元手順では使用しない。
 
 ### 7.4 追加の注意点
 
@@ -194,26 +194,27 @@ git -C ~/dotfiles restore --source=<復元したいコミットID> -- .config/nv
 
 ## 8. 新しいPC・別環境への再現
 
-1. dotfilesを取得し、LazyVim用の設定を所定の場所に配置する。
-2. LazyVim環境を `lvim` で起動する。
-3. 不足しているプラグインがあれば `:Lazy install` で導入する。
-4. `:Lazy restore` を実行して、Git管理された `lazy-lock.json` のリビジョンに合わせる。
-5. LazyVimを再起動し、必要な外部ツール・LSP・各種操作を確認する。
+1. dotfilesを取得し、`~/.config` を `~/dotfiles/.config` へのシンボリックリンクとして設定する。
+2. miseを導入し、`~/.config/mise/config.toml` で指定されたNeovimをインストールする。
+3. `nvim` でLazyVimを起動する。
+4. 不足しているプラグインがあれば `:Lazy install` で導入する。
+5. `:Lazy restore` を実行して、Git管理された `lazy-lock.json` のリビジョンに合わせる。
+6. LazyVimを再起動し、Mason管理の外部ツール・LSP・各種操作を確認する。
 
 **注意：最初から既存環境と同じリビジョンを再現することが目的なら、`:Lazy sync` を安易に使わない。** `sync` は更新を含むため、ロックファイルを書き換える可能性がある。
 
 ## 9. 日常運用の判断表
 
-| 目的 | 実行すること |
-| --- | --- |
-| 更新の有無だけ知りたい | `:Lazy check` |
-| 通常の更新を実施したい | Git状態確認 → `:Lazy update` → 動作確認 → Gitコミット |
-| 特定プラグインだけ更新したい | `:Lazy update {plugin}` → 動作確認 → Gitコミット |
-| 更新直後に問題が発生した | Gitでロックファイルを更新前に戻す → `:Lazy restore` |
-| 以前にコミットした状態へ戻したい | `git log` で対象を特定 → `git restore --source=...` → `:Lazy restore` |
-| 別環境で記録済みのバージョンを再現したい | 不足分をインストール → `:Lazy restore` |
-| 不要プラグインを掃除したい | 設定を確認 → `:Lazy clean` |
-| プラグインの追加・削除・更新を一括実行したい | 影響を確認した上で `:Lazy sync` |
+| 目的                                         | 実行すること                                                          |
+| -------------------------------------------- | --------------------------------------------------------------------- |
+| 更新の有無だけ知りたい                       | `:Lazy check`                                                         |
+| 通常の更新を実施したい                       | Git状態確認 → `:Lazy update` → 動作確認 → Gitコミット                 |
+| 特定プラグインだけ更新したい                 | `:Lazy update {plugin}` → 動作確認 → Gitコミット                      |
+| 更新直後に問題が発生した                     | Gitでロックファイルを更新前に戻す → `:Lazy restore`                   |
+| 以前にコミットした状態へ戻したい             | `git log` で対象を特定 → `git restore --source=...` → `:Lazy restore` |
+| 別環境で記録済みのバージョンを再現したい     | 不足分をインストール → `:Lazy restore`                                |
+| 不要プラグインを掃除したい                   | 設定を確認 → `:Lazy clean`                                            |
+| プラグインの追加・削除・更新を一括実行したい | 影響を確認した上で `:Lazy sync`                                       |
 
 ## 10. 運用上の原則
 
@@ -221,7 +222,6 @@ git -C ~/dotfiles restore --source=<復元したいコミットID> -- .config/nv
 - **`update` と `restore` を混同しない。** `restore` の復元先は、その時点のロックファイルで決まる。
 - **正常に動作した更新のみコミットする。** 問題のある更新状態を確定させない。
 - **設定変更とプラグイン更新を分けられる場合は、別コミットにする。** 原因の追跡と復元を容易にする。
-- **既存Packer環境を巻き込まない。** コマンドの実行対象は `lvim` のLazyVim環境とする。
 
 ## 11. 参考資料
 

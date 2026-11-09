@@ -2,18 +2,14 @@
 # 1. インタラクティブ（手動操作）時のみ読み込む設定
 # ==========================================
 if status is-interactive
-  # Commands to run in interactive sessions can go here
-  alias vim='nvim'
-  alias debugchrom='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222'
-  alias ll='eza -l -F --icons --sort=type --time-style iso'
-  alias lla='eza -a -l -F --icons --sort=type --time-style iso'
+    # Commands to run in interactive sessions can go here
+    alias vim='nvim'
+    alias debugchrom='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222'
+    alias ll='eza -l -F --icons --sort=type --time-style iso'
+    alias lla='eza -a -l -F --icons --sort=type --time-style iso'
 
-
-  # 最新のNeovimの起動する、nvim-lazyvimフォルダを参照する設定
-  # alias lvim="env NVIM_APPNAME=nvim-lazyvim mise exec neovim@latest -- nvim"
-  alias lvim="env NVIM_APPNAME=nvim-lazyvim MISE_CONFIG_FILE=$HOME/.config/nvim-lazyvim/mise/mise.toml mise exec neovim -- nvim"
-  abbr -a glog git log --graph --oneline --all
-  abbr -a reload source ~/dotfiles/.config/fish/config.fish
+    abbr -a glog git log --graph --oneline --all
+    abbr -a reload source ~/dotfiles/.config/fish/config.fish
 end
 
 # ==========================================
@@ -31,10 +27,8 @@ end
 #     bind -M insert \ef forward-word       # Alt + f で1単語ずつ確定
 # end
 
-
 # ディレクトリ移動の短縮化プラグインの初期設定
 zoxide init fish | source
-
 
 # ==========================================
 # タイポやスペース始まりのコマンドを履歴から消す（Sponge代替）
@@ -57,7 +51,7 @@ function y
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
     command yazi $argv --cwd-file="$tmp"
 
-    if read -z cwd < "$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+    if read -z cwd <"$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
         builtin cd -- "$cwd"
     end
 

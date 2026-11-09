@@ -1,7 +1,2 @@
-require('options')
-require('keymaps')
-require('autocmds')
-require('plugins')
-require('colorscheme')
-require('comment').setup()
-require('colorizer').setup()
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
