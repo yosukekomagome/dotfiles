@@ -20,3 +20,6 @@ vim.opt.undofile = false
 
 -- 日本語（CJK文字）をスペルチェック対象から除外
 vim.opt.spelllang = { "en", "cjk" }
+
+-- 行を途中で折り返ししない
+vim.opt.wrap = false

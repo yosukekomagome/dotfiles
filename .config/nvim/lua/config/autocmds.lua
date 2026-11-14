@@ -77,3 +77,11 @@ vim.api.nvim_create_autocmd("User", {
     vim.api.nvim_set_hl(0, "BlinkCmpMenu", {})
   end,
 })
+
+-- Markdownでは行を折り返さない
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = false
+  end,
+})
