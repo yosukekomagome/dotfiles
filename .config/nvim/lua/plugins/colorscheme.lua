@@ -49,7 +49,7 @@ return {
 
         -- blink.cmp highlight
         hl.BlinkCmpMenuBorder = { fg = c.blue }
-        hl.BlinkCmpMenuSelection = { bg = c.bg_highlight }
+        hl.BlinkCmpMenuSelection = { bg = c.cyan800, bold = true }
         hl.BlinkCmpDocBorder = { fg = c.blue }
 
         -- Incline highlight
