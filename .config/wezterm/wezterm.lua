@@ -5,8 +5,8 @@ require("status_format")
 config.automatically_reload_config = true
 config.font_size = 15.0
 config.use_ime = true
-config.window_background_opacity = 0.60
-config.macos_window_background_blur = 15
+config.window_background_opacity = 0.80
+config.macos_window_background_blur = 20
 config.color_scheme = "Solarized Dark - Patched"
 config.font = wezterm.font_with_fallback({
 	"Hack Nerd Font",
