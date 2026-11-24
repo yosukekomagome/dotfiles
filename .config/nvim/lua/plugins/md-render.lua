@@ -12,12 +12,12 @@ return {
     end,
     keys = {
       {
-        "<leader>md",
+        "<leader>mp",
         "<cmd>MdRender toggle<cr>",
         desc = "Toggle Markdown Render",
       },
       {
-        "<leader>mp",
+        "<leader>ms",
         "<cmd>vert MdRender split<cr>",
         desc = "Markdown Preview (Vertical Split)",
       },
