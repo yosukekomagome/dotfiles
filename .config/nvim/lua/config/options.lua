@@ -23,3 +23,6 @@ vim.opt.spelllang = { "en", "cjk" }
 
 -- 行を途中で折り返ししない
 vim.opt.wrap = false
+
+-- マウス操作無効
+vim.opt.mouse = ""
