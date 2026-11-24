@@ -7,8 +7,8 @@ vim.keymap.set("i", "jj", "<ESC>", { desc = "Exit Insert Mode" })
 vim.keymap.set("i", "ｊｊ", "<ESC>", { desc = "Exit Insert Mode" })
 vim.keymap.set("i", "っｊ", "<ESC>", { desc = "Exit Insert Mode" })
 
--- Select All
-vim.keymap.set("n", "<C-a>", "gg<S-v>G", { desc = "Select All" })
+-- Select All (ノーマルモードとビジュアルモードの両方に対応)
+vim.keymap.set({ "n", "x" }, "<C-a>", "<Esc>ggVG", { desc = "Select All" })
 
 -- Split Window
 vim.keymap.set("n", "ss", "<Cmd>split<CR>", { desc = "Split Window Horizontally" })
