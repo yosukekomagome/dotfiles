@@ -26,3 +26,6 @@ vim.opt.wrap = false
 
 -- マウス操作無効
 vim.opt.mouse = ""
+
+--  ハイフンを単語の一部として扱う
+vim.opt.iskeyword:append("-")
