@@ -1,7 +1,6 @@
 return {
   {
     "delphinus/md-render.nvim",
-    version = "*",
     cmd = "MdRender",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
