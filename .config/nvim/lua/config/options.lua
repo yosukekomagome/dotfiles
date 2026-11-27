@@ -5,9 +5,8 @@
 -- ESLintの自動フォーマットを無効化、コード整形はPrettierなどのFormatterに任せる
 vim.g.lazyvim_eslint_auto_format = false
 
--- メッセージは英語、ヘルプは日本語
+-- メッセージは英語
 vim.cmd("language messages C")
-vim.opt.helplang = "ja"
 
 -- 行頭・行末でカーソルを前後の行へ回り込ませる設定
 vim.opt.whichwrap:append("h,l,<,>,[,]")
