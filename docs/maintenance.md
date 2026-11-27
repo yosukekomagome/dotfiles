@@ -1,6 +1,6 @@
 # 開発環境メンテナンス手順書
 
-> 初版（レビュー済み）：環境全体の実動作検証前。検証結果に応じて修正する。
+> 改訂版：定期アップデートの初回実動作検証結果を反映済み。詳細な障害対応・復旧手順は今後追記する。
 
 ## 定期アップデート早見表
 
@@ -9,7 +9,7 @@
 | 順序 | 対象 | 主な操作 |
 | --- | --- | --- |
 | 0 | 事前確認 | `cd ~/dotfiles`、`git status -sb` |
-| 1 | Homebrew | `brew update`、`brew upgrade --cask --greedy-latest`、`brew upgrade --formula` |
+| 1 | Homebrew | `brew update`、WezTermのMultiplexer終了・残存確認、`brew upgrade --cask --greedy-latest`、WezTerm起動・接続確認、`brew upgrade --formula` |
 | 2 | mise | `mise upgrade --global --bump` |
 | 3 | LazyVim・Tree-sitter | `:Lazy check`、`:Lazy update`、再起動 |
 | 4 | Mason | `:MasonUpdate`、`:Mason` → `C` → `U`、再起動 |
@@ -71,11 +71,13 @@ macOS本体、業務システム固有のNode.jsバージョン、プロジェ�
 
 外部ツールやプラグインの実体は各管理ツールに任せる。Fisher本体もGit管理外とする。設定ファイルは引き続きGit管理する。
 
-動作確認後、管理対象ごとに差分をコミットする。miseとLazyVimはMason更新後の総合動作確認を終えてから個別にコミットする。pushは最終工程でまとめて行う。
+動作確認後、管理対象ごとに差分をコミットする。miseとLazyVimはMason更新後の総合動作確認を終えてから個別にコミットする。更新に直接伴う設定の互換性対応は、関連する更新と同一コミットに含めてもよい。独立した設定変更は分けてコミットする。pushは最終工程でまとめて行う。
 
 ### 2.4 バックアップ・クリーンアップ方針
 
 定期更新時の追加バックアップは原則行わない。Homebrewの自動クリーンアップは標準動作のままとし、`HOMEBREW_NO_INSTALL_CLEANUP` は設定しない。
+
+miseの自動クリーンアップも標準動作のままとする。更新前のバージョンは標準で24時間の猶予期間を経て自動削除の対象となるため、長期保持は保証されない（3.3参照）。
 
 不要なパッケージや旧バージョンの明示的な削除は通常の更新と分離する。復旧が必要になった場合は状況に応じて個別対応する。Git管理情報だけでは外部ツールの完全な復元は保証されない。
 
@@ -83,7 +85,7 @@ macOS本体、業務システム固有のNode.jsバージョン、プロジェ�
 
 ### 3.1 事前確認
 
-macOS標準のターミナルを起動し、作業中のファイルを保存してWezTermを終了する。Caskの更新後にWezTermへ切り替え、以降の作業はWezTermで実施する。
+iTerm2またはmacOS標準のターミナルを起動し、WezTermのすべてのタブ・ペインで作業中のファイルを保存し、実行中の作業を終了してからWezTerm GUIを終了する。Multiplexerサーバーは3.2で終了する。サーバーの終了により保持されているタブ・ペイン・シェルセッションが失われるため、必要な作業を残さない。Caskの更新後にWezTermへ切り替え、以降の作業はWezTermで実施する。
 
 プロジェクト固有のmise設定の影響を避けるため、以降のシェル操作は原則としてdotfilesディレクトリで実施する。
 
@@ -93,7 +95,7 @@ git status -sb
 ```
 
 - [ ] 作業ツリーがクリーンである。
-- [ ] 編集中のファイルを保存し、Neovim・Yaziを終了した。
+- [ ] Multiplexer内を含むすべての作業を保存・終了し、Neovim・YaziおよびWezTerm GUIを終了した。
 - [ ] 業務上重要な作業の途中ではない。
 - [ ] 更新後の動作確認を行う時間が確保できる。
 
@@ -111,19 +113,35 @@ brew outdated --formula
 
 #### Caskのアップデート
 
-macOS標準のターミナルで実行する。WezTerm Nightlyのような `latest` 指定のCaskも更新対象に含める。Caskによっては自動更新型など、通常の更新対象外になるものがある。
+iTerm2またはmacOS標準のターミナルで実行する。WezTerm Nightlyのような `latest` 指定のCaskも更新対象に含める。Caskによっては自動更新型など、通常の更新対象外になるものがある。
+
+WezTerm GUIを終了してもローカルMultiplexerサーバーが残る場合がある。旧サーバーと更新後のGUIの通信プロトコルの不一致を防ぐため、現在のユーザーのサーバーを終了する。
+
+```fish
+pkill -TERM -u (id -u) -x wezterm-mux-server
+ps -axo pid,ppid,etime,command | grep '[w]ezterm'
+```
+
+終了対象が存在しない場合、`pkill` は終了ステータス1を返すことがある。残存確認で何も表示されないことを確認する（`grep` の終了ステータス1は正常）。プロセスが残る場合や終了処理で異常が発生した場合は原因を確認し、Caskの更新へ進まない。
 
 ```fish
 brew upgrade --cask --greedy-latest
 ```
 
-更新処理の完了後、WezTermを起動し、WezTerm内で確認する。
+更新処理の完了後、WezTermを起動する。
+
+```fish
+open -a WezTerm
+```
+
+WezTerm内で確認する。
 
 ```fish
 wezterm --version
+wezterm cli list
 ```
 
-設定の読み込みやターミナル操作に問題がないことを確認する。正常であればmacOS標準のターミナルを終了し、以降はWezTermで作業する。
+設定の読み込み、ターミナル操作、Multiplexerへの接続に問題がないことを確認する。正常であれば別のターミナルを終了し、以降はWezTermで作業する。
 
 #### Formulaのアップデート
 
@@ -191,7 +209,7 @@ git diff -- .config/mise/config.toml
 - [ ] config.tomlの完全固定指定が維持されている。
 - [ ] Neovimが起動する。
 
-npmの独立した更新は行わない。旧バージョンの保持はmiseの標準動作に任せ、業務プロジェクトで必要なバージョンが利用できることを確認する。詳細な互換性確認とGitコミットは3.5で実施する。
+npmの独立した更新は行わない。旧バージョンの保持はmiseの標準動作に任せる。標準設定では更新前のバージョンは24時間の猶予期間を経て、その後のmise実行時に自動削除の対象となる。追跡済みの他の設定で必要とされるバージョンは削除対象から除外される。`upgrade.auto_prune` や保持期間の設定は変更せず、通常更新で `mise prune` は実行しない。業務プロジェクトで必要なバージョンが利用できることを確認する。詳細な互換性確認とGitコミットは3.5で実施する。
 
 ### 3.4 LazyVim・Tree-sitter
 
@@ -343,15 +361,20 @@ ya --version
 yazi
 ```
 
+- [ ] 起動時にエラー・非推奨警告がない。
 - [ ] smart-enterによるファイル・ディレクトリ操作。
 - [ ] full-borderの罫線表示とtokyo-nightテーマ。
 - [ ] 画像・PDFのプレビュー、カスタムキーマップ。
+
+非推奨警告や設定APIの変更があった場合は、公式ドキュメント・変更履歴を確認し、必要な設定修正と再検証を行う。
 
 #### Gitコミット
 
 ```fish
 cd ~/dotfiles
-git diff -- .config/yazi/package.toml
+git status -sb
+git diff --check
+git diff -- .config/yazi/
 ```
 
 差分があり、正常動作を確認できた場合のみ実行する。
@@ -362,6 +385,8 @@ git diff --cached --check
 git diff --cached --stat
 git commit -m "chore(yazi): プラグインおよびテーマを更新"
 ```
+
+更新に伴う設定の互換性対応がある場合は、関連ファイルも明示的にステージングし、同一コミットに含めてもよい。コミットメッセージは実際の変更内容に合わせる。
 
 ### 3.8 最終確認・Git push
 
@@ -389,7 +414,7 @@ pushが正常終了し、作業ツリーがクリーンで、追跡ブランチ�
 
 ### 4.1 個別アップデート
 
-必要なツールだけを更新する場合の例。依存関係を確認し、更新後は対象機能と関連機能を検証する。WezTermを個別更新する場合も、WezTermを終了して別のターミナルから実行する。
+必要なツールだけを更新する場合の例。依存関係を確認し、更新後は対象機能と関連機能を検証する。WezTermを個別更新する場合も、3.1・3.2に従ってGUIとMultiplexerサーバーを終了し、別のターミナルから実行する。更新後の起動・接続確認も同様に行う。
 
 | 対象 | コマンド・操作例 |
 | --- | --- |
@@ -421,6 +446,7 @@ pushが正常終了し、作業ツリーがクリーンで、追跡ブランチ�
 | コマンド | 用途 |
 | --- | --- |
 | `brew doctor` | Homebrewの環境診断（通常更新でも実施） |
+| `brew linkage --test` | ライブラリ参照の破損確認（必要時のみ） |
 | `mise doctor` | miseの環境診断 |
 | `:checkhealth` | Neovim全体の診断 |
 | `:checkhealth vim.treesitter` | Tree-sitterの診断 |
@@ -428,6 +454,13 @@ pushが正常終了し、作業ツリーがクリーンで、追跡ブランチ�
 | `:checkhealth mason` | Masonの診断 |
 | `:checkhealth vim.lsp` / `:LspInfo` | LSPの状態確認 |
 | `:MasonLog` | Masonのログ確認 |
+
+`brew linkage --test` の実行によってHomebrewのdeveloper modeが自動的に有効化される場合がある。通常は実行不要。診断前に `brew developer state` で状態を確認し、無効だったものが有効化された場合は診断後に元へ戻す。
+
+```fish
+brew developer off
+brew developer state
+```
 
 ## 5. 障害対応・復旧手順
 
@@ -437,7 +470,7 @@ pushが正常終了し、作業ツリーがクリーンで、追跡ブランチ�
 
 LazyVimの既存の復元手順については[プラグイン管理手順](../.config/nvim/docs/lazyvim-plugin-management.md)を参照する。
 
-各管理ツールの詳細な復旧手順は、定期アップデートの実動作検証後に追記する。
+各管理ツールの詳細な復旧手順は別途整理して追記する。
 
 ## 6. 関連ドキュメント
 
