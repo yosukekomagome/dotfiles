@@ -6,11 +6,13 @@ Apple Silicon 搭載 Mac における開発環境の構成と、新しい Mac �
 
 設定ファイルは `~/dotfiles` で Git 管理し、Homebrew・mise・各種プラグインマネージャを利用して環境を構築する。
 
+構築後の定期アップデート・障害対応については、[開発環境メンテナンス手順書](docs/maintenance.md) を参照する。
+
 **基本方針**
 
 - **設定ファイルの一元管理**：各ツールの設定を dotfiles で Git 管理する。
 - **自動セットアップ**：`setup.sh` からアプリ・開発ツール・プラグインを導入する。
-- **バージョン管理**：Neovim と Node.js は mise で管理する。
+- **バージョン管理**：Neovim と Node.js は mise で完全固定バージョンとして管理する。
 - **プラグイン管理**：プラグイン本体は Git 管理せず、各パッケージマネージャで復元する。
 - **シンプルな構成**：GNU Stow などは使用せず、シンボリックリンクで設定を共有する。
 
@@ -29,25 +31,21 @@ Apple Silicon 搭載 Mac における開発環境の構成と、新しい Mac �
 | シェルプロンプト   | Tide                       | Fisher                |
 | エディタ           | Neovim + LazyVim           | mise / lazy.nvim      |
 | ファイルマネージャ | Yazi                       | Homebrew              |
+| Yazi プラグイン・Flavor | Ya                    | `package.toml`        |
 | 言語ランタイム     | Node.js                    | mise                  |
 | CLI ツール         | fzf、ripgrep、lazygit など | Homebrew              |
-| LSP・Formatter     | Mason                      | Neovim 側の設定       |
+| LSP・Formatter     | LSP サーバー・Formatter   | Mason                 |
+| 構文解析 CLI       | Tree-sitter CLI            | Homebrew              |
 | 構文解析パーサー   | Tree-sitter                | Neovim 側の設定       |
 
-その他のパッケージは `Brewfile` で管理する。
+その他の Homebrew パッケージは `Brewfile` で管理する。
 
 ### 2.2 Neovim・Node.js のバージョン
 
-グローバル設定は `~/.config/mise/config.toml` に定義する。
+グローバル設定は `~/.config/mise/config.toml` に定義する。現在のバージョンは [config.toml](.config/mise/config.toml) を参照する。
 
-```toml
-[tools]
-neovim = "0.12.6"
-node = "latest"
-```
-
-- Neovim は `0.12.6` を使用する。
-- Node.js はグローバルで最新版を使用する。
+- Neovim・Node.js は完全固定バージョンで管理する。
+- npm は Node.js 付属版を利用する。
 - プロジェクト固有のバージョンは、各プロジェクトの `mise.toml` で管理する。
 
 例えば、`kintone-v1` プロジェクトでは Node.js `20.15.1` を使用する。
@@ -91,13 +89,16 @@ WezTerm
 ├── .zprofile
 ├── .zshrc
 ├── Brewfile
+├── README.md
 ├── setup.sh
+├── docs/
+│   └── maintenance.md
 └── .config/
     ├── fish/
     │   ├── config.fish
     │   ├── fish_plugins
     │   └── functions/
-    │       └── fisher.fish
+    │       └── ide.fish
     │
     ├── mise/
     │   └── config.toml
@@ -106,6 +107,8 @@ WezTerm
     │   ├── init.lua
     │   ├── lazy-lock.json
     │   ├── lazyvim.json
+    │   ├── docs/
+    │   │   └── lazyvim-plugin-management.md
     │   └── lua/
     │       ├── config/
     │       └── plugins/
@@ -114,13 +117,15 @@ WezTerm
     │   └── wezterm.lua
     │
     └── yazi/
+        ├── init.lua
         ├── yazi.toml
         ├── keymap.toml
         ├── theme.toml
-        └── package.toml
+        ├── package.toml
+        └── yazi-setup.md
 ```
 
-上記は主要ファイルのみを示す。
+上記は Git 管理対象の主要ファイルのみを示す。
 
 ### シンボリックリンク
 
@@ -175,7 +180,7 @@ zsh ~/dotfiles/setup.sh
 | 2    | Brewfile によるアプリ・CLI ツールのインストール |
 | 3    | dotfiles のシンボリックリンク作成               |
 | 4    | mise による Neovim・Node.js のインストール      |
-| 5    | Fisher による fish プラグインの復元             |
+| 5    | Fisher 本体・fish プラグインの復元              |
 | 6    | Yazi プラグイン・Flavor の復元                  |
 | 7    | LazyVim プラグインの復元                        |
 
@@ -206,11 +211,9 @@ Git 管理済みの `~/.config/mise/config.toml` に従って Neovim と Node.js
 
 **Fisher**
 
-```zsh
-/opt/homebrew/bin/fish -c 'fisher update'
-```
+Fisher が利用できない場合は、公式配布元から関数を取得して fish セッション内で読み込む。その後、`fisher update` を実行し、`fish_plugins` に登録された Fisher 本体とプラグインを導入する。
 
-`fish_plugins` に定義されたプラグインを復元する。
+初回導入処理は [setup.sh](setup.sh) に含まれるため、通常は手動で Fisher をインストールする必要はない。
 
 **Yazi**
 
@@ -230,7 +233,7 @@ mise exec -- nvim --headless "+Lazy! restore" +qa
 
 ### 4.4 セットアップ時の注意事項
 
-初版の `setup.sh` は、新しい Mac への初回セットアップを対象としている。
+`setup.sh` は、新しい Mac への初回セットアップを対象としている。
 
 - 既存環境の移行やバックアップは行わない。
 - 既存の設定ファイルは上書きしない。
@@ -239,6 +242,8 @@ mise exec -- nvim --headless "+Lazy! restore" +qa
 - Tide の外観設定は自動復元しない。
 
 Homebrew の初回導入時には、管理者パスワードの入力や Command Line Tools のインストールが必要になる場合がある。
+
+各管理ツールのバージョン管理方式や配布状況により、別の Mac で同一バージョンの環境を完全に再現できるとは限らない。詳細は[開発環境メンテナンス手順書](docs/maintenance.md#5-障害対応復旧方針)を参照する。
 
 ---
 
@@ -257,25 +262,13 @@ Neovim のプラグインは lazy.nvim で管理する。
 
 `lazy-lock.json` を Git 管理することで、別の Mac でも記録されたプラグインのリビジョンを復元できる。
 
-プラグインの復元には `:Lazy restore` を使用する。
+プラグインの復元には `:Lazy restore` を使用する。詳細は[LazyVim プラグイン管理手順](.config/nvim/docs/lazyvim-plugin-management.md)を参照する。
 
 ### 5.2 Neovim：Mason・Tree-sitter
 
 LSP サーバーや Formatter は Mason、構文解析パーサーは Tree-sitter 側で管理する。
 
-現在利用している主な Mason パッケージは以下の7つ。
-
-```text
-eslint-lsp
-lua-language-server
-marksman
-prettier
-shfmt
-stylua
-vtsls
-```
-
-これらの導入対象は LazyVim の標準設定、Extras、および独自設定で管理する。
+導入対象は LazyVim の標準設定、Extras、および独自設定で管理する。
 
 `setup.sh` には Mason パッケージや Tree-sitter パーサーを個別に列挙しない。
 
@@ -287,21 +280,13 @@ vtsls
 
 ### 5.3 fish：Fisher
 
-fish のプラグインは Fisher で管理する。
+fish のプラグインと Fisher 本体は Fisher で管理する。
 
-プラグイン一覧は `~/.config/fish/fish_plugins` に記録する。
+管理対象の一覧は [fish_plugins](.config/fish/fish_plugins) に記録する。Fisher 本体も `jorgebucaran/fisher` として登録し、自己管理する。Tide の `@v6` 指定は維持する。
 
-現在利用しているプラグインは以下の3つ。
+Fisher 本体およびプラグインの実体は Git 管理対象外とする。`fish_plugins` はコミットハッシュを記録するロックファイルではない。
 
-```text
-IlanCosman/tide@v6
-patrickf1/fzf.fish
-jorgebucaran/autopair.fish
-```
-
-プラグイン本体は Git 管理対象外とし、Fisher で復元する。
-
-Tide の外観設定は、必要に応じて初回セットアップ後に手動で実行する。
+初回導入は `setup.sh` で行う。Tide の外観設定は、必要に応じて初回セットアップ後に手動で実行する。
 
 ```fish
 tide configure
@@ -317,7 +302,7 @@ Yazi のプラグインと Flavor は `package.toml` で管理する。
 ya pkg install
 ```
 
-プラグインを更新する場合は、`package.toml` の変更を Git に反映する。
+プラグインを更新する場合は、`package.toml` の変更を Git に反映する。詳細は[Yazi セットアップ手順](.config/yazi/yazi-setup.md)を参照する。
 
 ---
 
@@ -327,7 +312,7 @@ ya pkg install
 
 ```zsh
 brew --version
-brew bundle check --file="$HOME/dotfiles/Brewfile"
+brew bundle check --no-upgrade --file="$HOME/dotfiles/Brewfile"
 ```
 
 ### 6.2 シンボリックリンク
@@ -340,22 +325,30 @@ ls -ld ~/.config ~/.zprofile ~/.zshrc
 
 ### 6.3 mise・Neovim・Node.js
 
+プロジェクト固有の設定の影響を避けるため、dotfiles ディレクトリで確認する。
+
 ```zsh
+cd ~/dotfiles
 mise ls
 nvim --version
 node --version
+npm --version
+mise which nvim
+mise which node
 ```
 
-Neovim は `0.12.6`、Node.js は mise のグローバル設定で選択されたバージョンであることを確認する。
+Neovim・Node.js が `~/.config/mise/config.toml` に記録されたバージョンであり、npm が Node.js 付属版であることを確認する。
 
 通常のシェルからコマンドが見つからない場合は、mise の PATH・有効化設定を確認する。
 
 ### 6.4 fish・Yazi
 
-fish では次のコマンドで Fisher のプラグイン一覧を確認する。
+fish では次のコマンドで Fisher 本体とプラグイン一覧を確認する。
 
 ```fish
+fisher --version
 fisher list
+type -p fisher
 ```
 
 Yazi のパッケージ一覧は次のコマンドで確認する。
@@ -380,27 +373,13 @@ TypeScript・JavaScript・Lua・Markdown などのファイルを開き、LSP �
 
 ---
 
-## 7. 日常の管理方針
-
-### 設定ファイルの変更
+## 7. 日常の管理・メンテナンス
 
 設定ファイルは `~/dotfiles` 内で編集し、Git にコミットする。
 
-### Homebrew パッケージの追加・削除
+Homebrew パッケージの追加・削除に伴う構成変更は `Brewfile` に反映する。
 
-`Brewfile` を更新して管理する。
-
-### Neovim・Node.js のバージョン変更
-
-`~/.config/mise/config.toml`、または各プロジェクトの `mise.toml` を変更する。
-
-### Neovim プラグインの更新
-
-lazy.nvim で更新し、動作確認後に `lazy-lock.json` を Git にコミットする。
-
-### fish・Yazi プラグインの更新
-
-Fisher の `fish_plugins`、Yazi の `package.toml` を管理元とし、必要に応じて Git に変更を反映する。
+定期アップデート、更新後の動作確認、臨時メンテナンス、障害対応・復旧方針については、[開発環境メンテナンス手順書](docs/maintenance.md) を参照する。`setup.sh` は定期アップデートには使用しない。
 
 ---
 
@@ -416,7 +395,9 @@ Fisher の `fish_plugins`、Yazi の `package.toml` を管理元とし、必要�
 
 ### 新しい Mac での動作検証について
 
-現行 Mac では、`setup.sh` の zsh 構文チェックと、`Brewfile` の依存関係チェックを実施済み。
+現行 Mac では、`setup.sh` の zsh 構文チェック、`Brewfile` の依存関係チェック、および Fisher の導入部分の fish 構文チェックを実施済み。
+
+Fisher の初回導入処理は、一時的な XDG ディレクトリを使用した環境で実動作を検証済み。
 
 ただし、新しい Mac に対する `setup.sh` の一括実行は未検証である。初回構築後は、各ツールのインストール状態と動作を確認する。
 

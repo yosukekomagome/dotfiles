@@ -6,16 +6,16 @@
 
 週1回を目安に、上から順に実施する。確認・コミットの詳細は第3章を参照する。
 
-| 順序 | 対象 | 主な操作 |
-| --- | --- | --- |
-| 0 | 事前確認 | `cd ~/dotfiles`、`git status -sb` |
-| 1 | Homebrew | `brew update`、WezTermのMultiplexer終了・残存確認、`brew upgrade --cask --greedy-latest`、WezTerm起動・接続確認、`brew upgrade --formula` |
-| 2 | mise | `mise upgrade --global --bump` |
-| 3 | LazyVim・Tree-sitter | `:Lazy check`、`:Lazy update`、再起動 |
-| 4 | Mason | `:MasonUpdate`、`:Mason` → `C` → `U`、再起動 |
-| 5 | Fisher | `fisher update` |
-| 6 | Yazi | `ya pkg upgrade` |
-| 7 | 最終確認 | `git status -sb`、`git push` |
+| 順序 | 対象                 | 主な操作                                                                                                                                  |
+| ---- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 0    | 事前確認             | `cd ~/dotfiles`、`git status -sb`                                                                                                         |
+| 1    | Homebrew             | `brew update`、WezTermのMultiplexer終了・残存確認、`brew upgrade --cask --greedy-latest`、WezTerm起動・接続確認、`brew upgrade --formula` |
+| 2    | mise                 | `mise upgrade --global --bump`                                                                                                            |
+| 3    | LazyVim・Tree-sitter | `:Lazy check`、`:Lazy update`、再起動                                                                                                     |
+| 4    | Mason                | `:MasonUpdate`、`:Mason` → `C` → `U`、再起動                                                                                              |
+| 5    | Fisher               | `fisher update`                                                                                                                           |
+| 6    | Yazi                 | `ya pkg upgrade`                                                                                                                          |
+| 7    | 最終確認             | `git status -sb`、`git push`                                                                                                              |
 
 早見表は更新順序を確認するためのものであり、動作確認を省略して連続実行するためのものではない。
 
@@ -27,14 +27,14 @@ macOS上の共通開発環境を継続的に更新し、正常動作を維持す
 
 ### 1.2 対象範囲
 
-| 管理ツール | 更新対象 |
-| --- | --- |
-| Homebrew | Formula・Cask、mise、fish、Tree-sitter CLI、WezTerm、Yazi・Yaなど |
-| mise | グローバルのNeovim・Node.js（付属npmを含む） |
-| lazy.nvim | LazyVim・関連プラグイン、Tree-sitterパーサーのビルド処理 |
-| Mason | Registry、LSPサーバー、Formatterなど |
-| Fisher | Fisher本体、fishプラグイン |
-| Ya | Yaziプラグイン・テーマ |
+| 管理ツール | 更新対象                                                          |
+| ---------- | ----------------------------------------------------------------- |
+| Homebrew   | Formula・Cask、mise、fish、Tree-sitter CLI、WezTerm、Yazi・Yaなど |
+| mise       | グローバルのNeovim・Node.js（付属npmを含む）                      |
+| lazy.nvim  | LazyVim・関連プラグイン、Tree-sitterパーサーのビルド処理          |
+| Mason      | Registry、LSPサーバー、Formatterなど                              |
+| Fisher     | Fisher本体、fishプラグイン                                        |
+| Ya         | Yaziプラグイン・テーマ                                            |
 
 macOS本体、業務システム固有のNode.jsバージョン、プロジェクトのnpm依存パッケージは対象外とする。npmグローバルパッケージの独立した更新工程は設けない。
 
@@ -49,25 +49,25 @@ macOS本体、業務システム固有のNode.jsバージョン、プロジェ�
 
 ### 2.2 バージョン管理方針
 
-| 対象 | 方針 |
-| --- | --- |
-| Homebrew | Formula・Caskが提供するバージョンを利用 |
-| mise | Neovim・Node.jsを完全固定し、更新時に `--bump` を指定 |
-| npm | Node.js付属版を利用 |
-| LazyVim | 原則として対象ブランチの最新コミット。LazyVim内部の互換性制約は維持し、個別制約は明確な理由がある場合のみ設定 |
-| Mason | Registryが提供するバージョンを利用 |
-| Fisher | 自己管理。tideの `@v6` 指定を維持 |
-| Yazi | `package.toml` にリビジョン・ハッシュを記録し、原則として更新可能な状態を維持 |
+| 対象     | 方針                                                                                                          |
+| -------- | ------------------------------------------------------------------------------------------------------------- |
+| Homebrew | Formula・Caskが提供するバージョンを利用                                                                       |
+| mise     | Neovim・Node.jsを完全固定し、更新時に `--bump` を指定                                                         |
+| npm      | Node.js付属版を利用                                                                                           |
+| LazyVim  | 原則として対象ブランチの最新コミット。LazyVim内部の互換性制約は維持し、個別制約は明確な理由がある場合のみ設定 |
+| Mason    | Registryが提供するバージョンを利用                                                                            |
+| Fisher   | 自己管理。tideの `@v6` 指定を維持                                                                             |
+| Yazi     | `package.toml` にリビジョン・ハッシュを記録し、原則として更新可能な状態を維持                                 |
 
 ### 2.3 Git管理方針
 
-| 管理ファイル | 更新時の扱い |
-| --- | --- |
-| `Brewfile` | 通常の更新では変更しない |
-| `.config/mise/config.toml` | バージョン変更時にコミット |
+| 管理ファイル                  | 更新時の扱い               |
+| ----------------------------- | -------------------------- |
+| `Brewfile`                    | 通常の更新では変更しない   |
+| `.config/mise/config.toml`    | バージョン変更時にコミット |
 | `.config/nvim/lazy-lock.json` | プラグイン更新時にコミット |
-| `.config/fish/fish_plugins` | 管理対象の変更時にコミット |
-| `.config/yazi/package.toml` | パッケージ更新時にコミット |
+| `.config/fish/fish_plugins`   | 管理対象の変更時にコミット |
+| `.config/yazi/package.toml`   | パッケージ更新時にコミット |
 
 外部ツールやプラグインの実体は各管理ツールに任せる。Fisher本体もGit管理外とする。設定ファイルは引き続きGit管理する。
 
@@ -265,10 +265,10 @@ Registryの更新完了を確認する。Masonプラグインの更新とは別�
 
 管理画面で次のキーを順に操作する。
 
-| キー | 操作 |
-| --- | --- |
-| `C` | 更新候補を確認し、確認処理の完了を待つ |
-| `U` | インストール済みパッケージを一括更新 |
+| キー | 操作                                   |
+| ---- | -------------------------------------- |
+| `C`  | 更新候補を確認し、確認処理の完了を待つ |
+| `U`  | インストール済みパッケージを一括更新   |
 
 すべての更新が完了し、インストールエラーがないことを確認してNeovimを再起動する。
 
@@ -416,44 +416,44 @@ pushが正常終了し、作業ツリーがクリーンで、追跡ブランチ�
 
 必要なツールだけを更新する場合の例。依存関係を確認し、更新後は対象機能と関連機能を検証する。WezTermを個別更新する場合も、3.1・3.2に従ってGUIとMultiplexerサーバーを終了し、別のターミナルから実行する。更新後の起動・接続確認も同様に行う。
 
-| 対象 | コマンド・操作例 |
-| --- | --- |
-| Homebrew Formula | `brew upgrade --formula fish` |
-| WezTerm Nightly | `brew upgrade --cask --greedy-latest wezterm@nightly` |
-| Neovim | `mise upgrade --global --bump neovim` |
-| Node.js | `mise upgrade --global --bump node` |
-| Neovimプラグイン | `:Lazy update md-render.nvim` |
-| Masonパッケージ | `:Mason` で対象を選択して `c`、`u` |
-| Fisher本体 | `fisher update jorgebucaran/fisher` |
+| 対象             | コマンド・操作例                                      |
+| ---------------- | ----------------------------------------------------- |
+| Homebrew Formula | `brew upgrade --formula fish`                         |
+| WezTerm Nightly  | `brew upgrade --cask --greedy-latest wezterm@nightly` |
+| Neovim           | `mise upgrade --global --bump neovim`                 |
+| Node.js          | `mise upgrade --global --bump node`                   |
+| Neovimプラグイン | `:Lazy update md-render.nvim`                         |
+| Masonパッケージ  | `:Mason` で対象を選択して `c`、`u`                    |
+| Fisher本体       | `fisher update jorgebucaran/fisher`                   |
 
 ### 4.2 不要なパッケージ・ファイルの整理
 
 通常の週次更新には含めない。必要になった場合だけ実施する。
 
-| 操作 | 削除対象の確認 | 実行コマンド |
-| --- | --- | --- |
-| Homebrewの整理 | `brew cleanup --dry-run` | `brew cleanup` |
-| 不要な依存関係 | `brew autoremove --dry-run` | `brew autoremove` |
+| 操作                     | 削除対象の確認                                         | 実行コマンド                                                   |
+| ------------------------ | ------------------------------------------------------ | -------------------------------------------------------------- |
+| Homebrewの整理           | `brew cleanup --dry-run`                               | `brew cleanup`                                                 |
+| 不要な依存関係           | `brew autoremove --dry-run`                            | `brew autoremove`                                              |
 | Brewfileにないパッケージ | `brew bundle cleanup --file="$HOME/dotfiles/Brewfile"` | `brew bundle cleanup --force --file="$HOME/dotfiles/Brewfile"` |
-| miseの未使用バージョン | `mise prune --dry-run` | `mise prune` |
-| miseの個別バージョン | `mise ls` | `mise uninstall ツール@バージョン` |
-| 不要なNeovimプラグイン | `:Lazy` のClean対象を確認 | `:Lazy clean` |
+| miseの未使用バージョン   | `mise prune --dry-run`                                 | `mise prune`                                                   |
+| miseの個別バージョン     | `mise ls`                                              | `mise uninstall ツール@バージョン`                             |
+| 不要なNeovimプラグイン   | `:Lazy` のClean対象を確認                              | `:Lazy clean`                                                  |
 
 削除対象を必ず確認する。特にmiseの旧Node.jsは業務プロジェクトで使用している可能性があるため、グローバル設定にないことだけで不要と判断しない。
 
 ### 4.3 ヘルスチェック・診断
 
-| コマンド | 用途 |
-| --- | --- |
-| `brew doctor` | Homebrewの環境診断（通常更新でも実施） |
-| `brew linkage --test` | ライブラリ参照の破損確認（必要時のみ） |
-| `mise doctor` | miseの環境診断 |
-| `:checkhealth` | Neovim全体の診断 |
-| `:checkhealth vim.treesitter` | Tree-sitterの診断 |
-| `:TSUpdate` | パーサーの手動更新・自動更新失敗時の対応 |
-| `:checkhealth mason` | Masonの診断 |
-| `:checkhealth vim.lsp` / `:LspInfo` | LSPの状態確認 |
-| `:MasonLog` | Masonのログ確認 |
+| コマンド                            | 用途                                     |
+| ----------------------------------- | ---------------------------------------- |
+| `brew doctor`                       | Homebrewの環境診断（通常更新でも実施）   |
+| `brew linkage --test`               | ライブラリ参照の破損確認（必要時のみ）   |
+| `mise doctor`                       | miseの環境診断                           |
+| `:checkhealth`                      | Neovim全体の診断                         |
+| `:checkhealth vim.treesitter`       | Tree-sitterの診断                        |
+| `:TSUpdate`                         | パーサーの手動更新・自動更新失敗時の対応 |
+| `:checkhealth mason`                | Masonの診断                              |
+| `:checkhealth vim.lsp` / `:LspInfo` | LSPの状態確認                            |
+| `:MasonLog`                         | Masonのログ確認                          |
 
 `brew linkage --test` の実行によってHomebrewのdeveloper modeが自動的に有効化される場合がある。通常は実行不要。診断前に `brew developer state` で状態を確認し、無効だったものが有効化された場合は診断後に元へ戻す。
 
@@ -516,19 +516,9 @@ Git管理された `package.toml` のリビジョン情報を利用して、プ�
 
 ### 6.1 既存ドキュメント
 
+- [macOS 開発環境 構築・管理ガイド](../README.md)
 - [LazyVimプラグイン管理手順](../.config/nvim/docs/lazyvim-plugin-management.md)
 - [Yaziセットアップ手順](../.config/yazi/yazi-setup.md)
-
-#### 補足：新規環境でのFisherのブートストラップ
-
-Fisher本体はGit管理外のため、dotfilesを新規展開した環境では初回のみ導入が必要となる。fishで以下を実行する。公式取得先のコードを読み込む操作であるため、必要に応じて事前に内容を確認する。
-
-```fish
-curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
-and fisher update
-```
-
-`fish_plugins` が配置済みで、Fisher自身（`jorgebucaran/fisher`）も登録されていることが前提。既存の一覧を復元するため、Fisherだけを個別にインストールするのではなく `fisher update` を利用する。新規環境での復元処理は未検証のため、実行後に `fisher list` と `fish_plugins` の内容、各プラグインの動作を確認する。
 
 ### 6.2 公式ドキュメント
 
