@@ -1,30 +1,29 @@
 # Yazi インストール＆設定 備忘録（fishシェル向け）
-Rust製の高速ターミナルファイラー「Yazi」の導入手順、主要なプレビュー機能に必要なパッケージ、およびfishシェルとの連携・詳細設定をまとめる。
+
+Rust製の高速ターミナルファイラー「Yazi」の構成、主要なプレビュー機能に必要なパッケージ、fishシェルとの連携、プラグイン設定および操作方法をまとめる。
+
+新しいMacへの環境構築は[macOS 開発環境 構築・管理ガイド](../../README.md)、定期アップデート・障害対応は[開発環境メンテナンス手順書](../../docs/maintenance.md)を参照する。
 
 ## 1. 環境
 
-
-- **OS**: macOS
-- **Terminal**: WezTerm
+- **OS**: macOS（Apple Silicon）
+- **Terminal**: WezTerm Nightly
 - **Shell**: fish
-- **Filer**: Yazi（v26.9.1）
+- **Filer**: Yazi（Homebrewで管理）
+
+現在のバージョンは `yazi --version` および `ya --version` で確認する。
 
 ## 2. Yazi本体と依存パッケージのインストール
 
+Yazi本体と関連パッケージは [Brewfile](../../Brewfile) で管理する。通常の新規環境構築では `setup.sh` によって導入されるため、個別のインストールは不要。
 
-Yaziの基本機能に加え、主要なプレビュー機能や高速な検索機能を利用するため、以下のパッケージをインストールする。
-
-一部のパッケージは、利用する機能に応じて任意で導入する。
-
-```bash
-brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide imagemagick
-```
+Yaziの基本機能に加え、主要なプレビュー機能や高速な検索機能を利用するため、以下のパッケージを使用する。一部のパッケージは利用する機能に応じて任意で導入するものだが、現在の環境ではすべてBrewfileに登録している。
 
 ### インストールするパッケージの役割
 
 **メインアプリケーション**
 
-- **`yazi`**: ファイラー本体。Rust製で軽量・高速。
+- **`yazi`**: ファイラー本体とCLIツール `ya`。
 
 **プレビュー拡張ツール**
 
@@ -43,22 +42,18 @@ brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide imagemagick
 
 ## 3. fishシェルとの連携
 
-
 ### 3.1 ディレクトリ同期のラッパー関数設定
 
-Yazi内でディレクトリを移動したあと、ファイラーを終了（`q`）した際に、fishシェルのカレントディレクトリもその場所に同期させる。
+Yaziを `y` で起動し、`Q` で終了した際に、fishシェルのカレントディレクトリをYaziの終了時のディレクトリに同期させる。`q` では同期せずに終了する。
 
-`~/.config/fish/config.fish` の末尾に以下を追記する。
+ラッパー関数は [config.fish](../fish/config.fish) に定義済みである。dotfilesを展開した環境では追記する必要はない。
 
-```
-# ==========================================
-# Yazi (ファイラー) 連携設定
-# ==========================================
+```fish
 function y
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
     command yazi $argv --cwd-file="$tmp"
 
-    if read -z cwd < "$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+    if read -z cwd <"$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
         builtin cd -- "$cwd"
     end
 
@@ -66,8 +61,11 @@ function y
 end
 ```
 
-## 4. Yaziの詳細設定（CSV/Excel等のファイル展開ルール）
+`q` と `Q` の動作は [keymap.toml](keymap.toml) の独自設定による。標準の終了キーとは同期の有無が逆になっている。
 
+## 4. Yaziの詳細設定
+
+### 4.1 CSV/Excel等のファイル展開ルール
 
 CSVやExcelファイルをmacOSのデフォルトアプリケーションで開くように設定する。
 
@@ -77,11 +75,9 @@ CSVやExcelファイルをmacOSのデフォルトアプリケーションで開�
 - **`mime`**: MIMEタイプによるファイルの判定。
 - **`use`**: 使用するオープナーの指定。
 
-今回は `**/*.csv` などのGlobパターンを使用する。
+現在の [yazi.toml](yazi.toml) では以下のルールを設定している。
 
-`~/.config/yazi/yazi.toml` を作成・編集する。
-
-```
+```toml
 [open]
 prepend_rules = [
     { url = "**/*.csv", use = [ "open", "edit" ] },
@@ -93,32 +89,47 @@ prepend_rules = [
 
 - **`Enter`**: `smart-enter` により、フォルダなら移動し、ファイルなら開く。
 - **`o`**: 設定されたオープナーでファイルを開く。
-- **`O`（Shift + o）**: 「Open with」メニューを表示し、開き方を選択する。
+- **`O`（Shift + o）**: 開き方を選択するメニューを表示する。
 
 `o` / `O` は、複数のファイルを選択している場合、選択中のファイルを対象とする。
 
-なお、`Enter` は5章で設定する `smart-enter` プラグインを実行するため、標準の `open` コマンドと動作が完全に同じとは限らない。
+なお、`Enter` は5章で説明する `smart-enter` プラグインを実行するため、標準の `open` コマンドと動作が完全に同じとは限らない。
 
-## 5. smart-enterプラグインの導入（直感的な操作）
+### 4.2 隠しファイルの表示
 
+`yazi.toml` で隠しファイルを初期状態から表示するように設定している。
 
-デフォルトでは `Enter` はファイルを開く操作、`l` はディレクトリに入る操作として設定されている。
-
-`smart-enter` プラグインを導入することで、両方のキーを「フォルダなら中に入り、ファイルなら開く」という動作に統一する。
-
-### 5.1 プラグインのインストール
-
-Yazi v26.9.1では、`ya pkg add` を使用する。
-
-```
-ya pkg add yazi-rs/plugins:smart-enter
+```toml
+[mgr]
+show_hidden = true
 ```
 
-### 5.2 キーマップの設定
+## 5. プラグイン・Flavorの管理と設定
 
-`~/.config/yazi/keymap.toml` を作成・編集する。
+### 5.1 管理方法
 
-```
+プラグインとFlavorは [package.toml](package.toml) で管理し、リビジョンとハッシュをGitに記録する。`plugins/`、`flavors/` の実体はGit管理しない。
+
+通常の新規環境構築では `setup.sh` が `ya pkg install` を実行する。Yaziのパッケージだけを導入・復元する場合も、配置済みの `package.toml` を利用する。
+
+| コマンド | 用途 |
+| --- | --- |
+| `ya pkg add パッケージID` | 新しいプラグイン・Flavorの追加 |
+| `ya pkg install` | `package.toml` に記録されたパッケージの導入・復元 |
+| `ya pkg upgrade` | パッケージの更新 |
+| `ya pkg list` | 管理対象の確認 |
+
+定期更新、動作確認、Gitへの反映はメンテナンス手順書の3.7に従う。Yazi本体とプラグイン・Flavorの互換性は別途考慮する。
+
+### 5.2 smart-enter（直感的な操作）
+
+`Enter` と `l` を「フォルダなら中に入り、ファイルなら開く」という動作に統一する。
+
+パッケージIDは `yazi-rs/plugins:smart-enter`。現在は登録済みのため、通常は `ya pkg add` を実行しない。
+
+[keymap.toml](keymap.toml) の設定：
+
+```toml
 [[mgr.prepend_keymap]]
 on   = "<Enter>"
 run  = "plugin smart-enter"
@@ -130,54 +141,87 @@ run  = "plugin smart-enter"
 desc = "Enter the directory, or open the file"
 ```
 
-**注意**
+キーマップの設定には `[[mgr.prepend_keymap]]` を使用する。旧形式の `[[manager.prepend_keymap]]` は使用しない。設定変更後はYaziを再起動する。
 
-Yazi v26.9.1では `[[mgr.prepend_keymap]]` を使用する。
+### 5.3 full-border（罫線表示）
 
-旧バージョンで使用されていた `[[manager.prepend_keymap]]` では設定が反映されないため、注意する。
+パッケージIDは `yazi-rs/plugins:full-border`。角丸の罫線を表示するため、[init.lua](init.lua) で以下の設定を行っている。
 
-設定変更後はYaziを再起動する。
+```lua
+require("full-border"):setup({
+    set = "rounded",
+})
+```
+
+旧設定の `type` オプションではなく `set` を使用する。
+
+### 5.4 tokyo-night（Flavor）
+
+パッケージIDは `BennyOe/tokyo-night`。[theme.toml](theme.toml) でダークテーマとして指定する。
+
+```toml
+[flavor]
+dark = "tokyo-night"
+```
 
 ## 6. 基本的な使い方と検索TIPS
 
-
 設定完了後、以下のコマンドでYaziを起動する。
 
-```
+```fish
 y
 ```
 
-`y` は3.1で定義したfishのラッパー関数であり、終了時にカレントディレクトリを同期する。
+`y` は3.1で定義したfishのラッパー関数であり、`Q` で終了した際にカレントディレクトリを同期する。
 
 ### 6.1 主要なキーバインド（Vimライク）
 
-- **`j` / `k`** : カーソルの上下移動。
-- **`h`** : 親ディレクトリに戻る（左へ）。
-- **`l` / `Enter`** : `smart-enter` により、フォルダなら中に入り、ファイルなら開く。
-- **`o`** : 設定されたオープナーでファイルを開く。
-- **`O`（Shift + o）** : 開くアプリケーションを選択する（Open with...）。
-- **`Space`** : ファイルの選択・選択解除（複数選択可能）。
-- **`q`** : ディレクトリを同期せずに終了する。
-- **`Q`（Shift + q）** : Yaziを終了する。ラッパー関数 `y` を使用した場合はシェル側のディレクトリも同期する。
-- **`Shift + j` （または `J`）**: プレビューを **下** にスクロール
-- **`Shift + k` （または `K`）**: プレビューを **上** にスクロール
+| キー | 動作 | 区分 |
+| --- | --- | --- |
+| `j` / `k` | カーソルの上下移動 | 標準 |
+| `h` | 親ディレクトリに戻る | 標準 |
+| `l` / `Enter` | フォルダなら中に入り、ファイルなら開く（smart-enter） | 独自 |
+| `o` | 設定されたオープナーでファイルを開く | 標準 |
+| `O` | 開き方を選択する | 標準 |
+| `Space` | ファイルの選択・選択解除 | 標準 |
+| `q` | ディレクトリを同期せずに終了 | 独自 |
+| `Q` | 終了時にディレクトリを同期（`y` で起動した場合） | 独自 |
+| `J` / `K` | プレビューを下／上へスクロール | 標準 |
+| `w` | Gitリポジトリのルートディレクトリへ移動 | 独自 |
+| `e` | ホームディレクトリへ移動 | 独自 |
+| `i` | ファイル一覧の絞り込み（`filter --smart`） | 独自 |
+
+独自キーマップの実装は [keymap.toml](keymap.toml) を参照する。`w` はGitリポジトリ内で使用する。標準の `w`（タスク管理）は上書きされている。
 
 ### 6.2 インクリメンタルサーチ・移動アシスト
 
 | キー | 使用ツール | 何を探す？ | 主な用途 |
 | --- | --- | --- | --- |
-| `f` （Filter） | 標準機能 | 現在のディレクトリ内のファイル、ディレクトリ | 入力文字列でリアルタイムに絞り込む。 |
-| `/` （Find） | 標準機能 | 現在のディレクトリ内のファイル、ディレクトリ |  ファイル一覧の前方検索。`n` / `N` で次・前の一致項目へカーソルを移動する。 |
-| `s`**（Search name）** | fd | ファイル・フォルダの名前 | 名前が分かっているファイルを探す |
-| `S`**（Search contents）** | ripgrep | ファイルの中身 | 特定の文字列を含むファイルを探す |
-| `z` | fzf | 現在の場所以下のファイル・フォルダ | 候補を絞って素早く移動する |
+| `f`（Filter） | 標準機能 | 現在のディレクトリ内のファイル・ディレクトリ | 入力文字列でリアルタイムに絞り込む |
+| `i`（独自設定） | 標準機能 | 現在のディレクトリ内のファイル・ディレクトリ | `filter --smart` による絞り込み |
+| `/`（Find） | 標準機能 | 現在のディレクトリ内のファイル・ディレクトリ | 前方検索。`n` / `N` で次・前の一致項目へ移動 |
+| `s`（Search name） | fd | ファイル・フォルダの名前 | 名前が分かっているファイルを探す |
+| `S`（Search contents） | ripgrep | ファイルの中身 | 特定の文字列を含むファイルを探す |
+| `z` | fzf | ファイル・フォルダ | 候補を絞って移動またはファイルを表示する |
 | `Z` | zoxide + fzf | 過去に訪れたフォルダ | よく使う作業フォルダへジャンプする |
 
 ### 6.3 マルチタブ
-- **t ⇒ t**: Create a new tab in CWD
-- **1, 2, ..., 9: Switch to the N-th tab
-- **[** Switch to the previous tab
-- **]i** Switch to the next tab
-- **{** Swap current tab with previous tab
-- **}** Swap current tab with next tab
-- **Ctrl + c** Close the current tab
+
+| キー | 動作 |
+| --- | --- |
+| `t` → `t` | 現在のディレクトリで新規タブを作成 |
+| `1` ～ `9` | 指定番号のタブへ移動 |
+| `[` | 前のタブへ移動 |
+| `]` | 次のタブへ移動 |
+| `{` | 現在のタブと前のタブを入れ替える |
+| `}` | 現在のタブと次のタブを入れ替える |
+| `Ctrl + c` | 現在のタブを閉じる |
+
+標準キーマップはYazi本体の更新で変更される場合がある。現在の割り当てはYazi内のヘルプ（`~`）や公式ドキュメントで確認する。
+
+## 7. 参考資料
+
+- [Yazi公式：Installation](https://yazi-rs.github.io/docs/installation/)
+- [Yazi公式：Quick Start](https://yazi-rs.github.io/docs/quick-start/)
+- [Yazi公式：CLI](https://yazi-rs.github.io/docs/cli/)
+- [Yazi公式：keymap.toml](https://yazi-rs.github.io/docs/configuration/keymap/)
