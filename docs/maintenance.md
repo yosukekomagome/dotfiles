@@ -243,7 +243,7 @@ nvim-treesitterの更新時はLazyVimのビルド処理によるパーサー更�
 git -C ~/dotfiles diff -- .config/nvim/lazy-lock.json
 ```
 
-詳細な動作確認とGitコミットは3.5で実施する。詳細なプラグイン管理については[LazyVimプラグイン管理手順](../.config/nvim/docs/lazyvim-plugin-management.md)を参照する。
+詳細な動作確認とGitコミットは3.5で実施する。詳細なプラグイン管理については[LazyVimプラグイン管理手順](lazyvim-plugin-management.md)を参照する。
 
 ### 3.5 Mason
 
@@ -494,7 +494,7 @@ Git管理された `lazy-lock.json` を利用して、プラグインを過去�
 
 ただし、Neovim本体、Tree-sitter CLI、言語別パーサー、Mason管理の外部ツールは別に管理されているため、関連する管理対象とのバージョン整合性を考慮する必要がある。
 
-復元方法は[プラグイン管理手順](../.config/nvim/docs/lazyvim-plugin-management.md)を参照する。
+復元方法は[プラグイン管理手順](lazyvim-plugin-management.md)を参照する。
 
 ### 5.4 Mason
 
@@ -517,8 +517,8 @@ Git管理された `package.toml` のリビジョン情報を利用して、プ�
 ### 6.1 既存ドキュメント
 
 - [macOS 開発環境 構築・管理ガイド](../README.md)
-- [LazyVimプラグイン管理手順](../.config/nvim/docs/lazyvim-plugin-management.md)
-- [Yaziセットアップ手順](../.config/yazi/yazi-setup.md)
+- [LazyVimプラグイン管理手順](lazyvim-plugin-management.md)
+- [Yaziセットアップ手順](yazi-setup.md)
 
 ### 6.2 公式ドキュメント
 

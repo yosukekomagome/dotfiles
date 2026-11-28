@@ -24,19 +24,19 @@ Apple Silicon 搭載 Mac における開発環境の構成と、新しい Mac �
 
 ### 2.1 主要ツール
 
-| 分類               | ツール                     | 管理方法              |
-| ------------------ | -------------------------- | --------------------- |
-| ターミナル         | WezTerm Nightly            | Homebrew              |
-| シェル             | zsh / fish                 | macOS 標準 / Homebrew |
-| シェルプロンプト   | Tide                       | Fisher                |
-| エディタ           | Neovim + LazyVim           | mise / lazy.nvim      |
-| ファイルマネージャ | Yazi                       | Homebrew              |
-| Yazi プラグイン・Flavor | Ya                    | `package.toml`        |
-| 言語ランタイム     | Node.js                    | mise                  |
-| CLI ツール         | fzf、ripgrep、lazygit など | Homebrew              |
-| LSP・Formatter     | LSP サーバー・Formatter   | Mason                 |
-| 構文解析 CLI       | Tree-sitter CLI            | Homebrew              |
-| 構文解析パーサー   | Tree-sitter                | Neovim 側の設定       |
+| 分類                    | ツール                     | 管理方法              |
+| ----------------------- | -------------------------- | --------------------- |
+| ターミナル              | WezTerm Nightly            | Homebrew              |
+| シェル                  | zsh / fish                 | macOS 標準 / Homebrew |
+| シェルプロンプト        | Tide                       | Fisher                |
+| エディタ                | Neovim + LazyVim           | mise / lazy.nvim      |
+| ファイルマネージャ      | Yazi                       | Homebrew              |
+| Yazi プラグイン・Flavor | Ya                         | `package.toml`        |
+| 言語ランタイム          | Node.js                    | mise                  |
+| CLI ツール              | fzf、ripgrep、lazygit など | Homebrew              |
+| LSP・Formatter          | LSP サーバー・Formatter    | Mason                 |
+| 構文解析 CLI            | Tree-sitter CLI            | Homebrew              |
+| 構文解析パーサー        | Tree-sitter                | Neovim 側の設定       |
 
 その他の Homebrew パッケージは `Brewfile` で管理する。
 
@@ -92,7 +92,9 @@ WezTerm
 ├── README.md
 ├── setup.sh
 ├── docs/
-│   └── maintenance.md
+│   ├── lazyvim-plugin-management.md
+│   ├── maintenance.md
+│   └── yazi-setup.md
 └── .config/
     ├── fish/
     │   ├── config.fish
@@ -107,8 +109,6 @@ WezTerm
     │   ├── init.lua
     │   ├── lazy-lock.json
     │   ├── lazyvim.json
-    │   ├── docs/
-    │   │   └── lazyvim-plugin-management.md
     │   └── lua/
     │       ├── config/
     │       └── plugins/
@@ -121,11 +121,11 @@ WezTerm
         ├── yazi.toml
         ├── keymap.toml
         ├── theme.toml
-        ├── package.toml
-        └── yazi-setup.md
+        └── package.toml
 ```
 
-上記は Git 管理対象の主要ファイルのみを示す。
+ドキュメントは原則として `docs/` に集約し、フラットな構成で管理する。
+リポジトリ全体の概要はルートの `README.md` に記載し、`.config/` は各ツールの設定ファイルを配置する領域とする。
 
 ### シンボリックリンク
 
@@ -262,7 +262,7 @@ Neovim のプラグインは lazy.nvim で管理する。
 
 `lazy-lock.json` を Git 管理することで、別の Mac でも記録されたプラグインのリビジョンを復元できる。
 
-プラグインの復元には `:Lazy restore` を使用する。詳細は[LazyVim プラグイン管理手順](.config/nvim/docs/lazyvim-plugin-management.md)を参照する。
+プラグインの復元には `:Lazy restore` を使用する。詳細は[LazyVim プラグイン管理手順](docs/lazyvim-plugin-management.md)を参照する。
 
 ### 5.2 Neovim：Mason・Tree-sitter
 
@@ -302,7 +302,7 @@ Yazi のプラグインと Flavor は `package.toml` で管理する。
 ya pkg install
 ```
 
-プラグインを更新する場合は、`package.toml` の変更を Git に反映する。詳細は[Yazi セットアップ手順](.config/yazi/yazi-setup.md)を参照する。
+プラグインを更新する場合は、`package.toml` の変更を Git に反映する。詳細は[Yazi セットアップ手順](docs/yazi-setup.md)を参照する。
 
 ---
 

@@ -2,7 +2,7 @@
 
 Rust製の高速ターミナルファイラー「Yazi」の構成、主要なプレビュー機能に必要なパッケージ、fishシェルとの連携、プラグイン設定および操作方法をまとめる。
 
-新しいMacへの環境構築は[macOS 開発環境 構築・管理ガイド](../../README.md)、定期アップデート・障害対応は[開発環境メンテナンス手順書](../../docs/maintenance.md)を参照する。
+新しいMacへの環境構築は[macOS 開発環境 構築・管理ガイド](../README.md)、定期アップデート・障害対応は[開発環境メンテナンス手順書](maintenance.md)を参照する。
 
 ## 1. 環境
 
@@ -15,7 +15,7 @@ Rust製の高速ターミナルファイラー「Yazi」の構成、主要なプ
 
 ## 2. Yazi本体と依存パッケージのインストール
 
-Yazi本体と関連パッケージは [Brewfile](../../Brewfile) で管理する。通常の新規環境構築では `setup.sh` によって導入されるため、個別のインストールは不要。
+Yazi本体と関連パッケージは [Brewfile](../Brewfile) で管理する。通常の新規環境構築では `setup.sh` によって導入されるため、個別のインストールは不要。
 
 Yaziの基本機能に加え、主要なプレビュー機能や高速な検索機能を利用するため、以下のパッケージを使用する。一部のパッケージは利用する機能に応じて任意で導入するものだが、現在の環境ではすべてBrewfileに登録している。
 
@@ -46,7 +46,7 @@ Yaziの基本機能に加え、主要なプレビュー機能や高速な検索�
 
 Yaziを `y` で起動し、`Q` で終了した際に、fishシェルのカレントディレクトリをYaziの終了時のディレクトリに同期させる。`q` では同期せずに終了する。
 
-ラッパー関数は [config.fish](../fish/config.fish) に定義済みである。dotfilesを展開した環境では追記する必要はない。
+ラッパー関数は [config.fish](../.config/fish/config.fish) に定義済みである。dotfilesを展開した環境では追記する必要はない。
 
 ```fish
 function y
@@ -61,7 +61,7 @@ function y
 end
 ```
 
-`q` と `Q` の動作は [keymap.toml](keymap.toml) の独自設定による。標準の終了キーとは同期の有無が逆になっている。
+`q` と `Q` の動作は [keymap.toml](../.config/yazi/keymap.toml) の独自設定による。標準の終了キーとは同期の有無が逆になっている。
 
 ## 4. Yaziの詳細設定
 
@@ -75,7 +75,7 @@ CSVやExcelファイルをmacOSのデフォルトアプリケーションで開�
 - **`mime`**: MIMEタイプによるファイルの判定。
 - **`use`**: 使用するオープナーの指定。
 
-現在の [yazi.toml](yazi.toml) では以下のルールを設定している。
+現在の [yazi.toml](../.config/yazi/yazi.toml) では以下のルールを設定している。
 
 ```toml
 [open]
@@ -108,7 +108,7 @@ show_hidden = true
 
 ### 5.1 管理方法
 
-プラグインとFlavorは [package.toml](package.toml) で管理し、リビジョンとハッシュをGitに記録する。`plugins/`、`flavors/` の実体はGit管理しない。
+プラグインとFlavorは [package.toml](../.config/yazi/package.toml) で管理し、リビジョンとハッシュをGitに記録する。`plugins/`、`flavors/` の実体はGit管理しない。
 
 通常の新規環境構築では `setup.sh` が `ya pkg install` を実行する。Yaziのパッケージだけを導入・復元する場合も、配置済みの `package.toml` を利用する。
 
@@ -127,7 +127,7 @@ show_hidden = true
 
 パッケージIDは `yazi-rs/plugins:smart-enter`。現在は登録済みのため、通常は `ya pkg add` を実行しない。
 
-[keymap.toml](keymap.toml) の設定：
+[keymap.toml](../.config/yazi/keymap.toml) の設定：
 
 ```toml
 [[mgr.prepend_keymap]]
@@ -145,7 +145,7 @@ desc = "Enter the directory, or open the file"
 
 ### 5.3 full-border（罫線表示）
 
-パッケージIDは `yazi-rs/plugins:full-border`。角丸の罫線を表示するため、[init.lua](init.lua) で以下の設定を行っている。
+パッケージIDは `yazi-rs/plugins:full-border`。角丸の罫線を表示するため、[init.lua](../.config/yazi/init.lua) で以下の設定を行っている。
 
 ```lua
 require("full-border"):setup({
@@ -157,7 +157,7 @@ require("full-border"):setup({
 
 ### 5.4 tokyo-night（Flavor）
 
-パッケージIDは `BennyOe/tokyo-night`。[theme.toml](theme.toml) でダークテーマとして指定する。
+パッケージIDは `BennyOe/tokyo-night`。[theme.toml](../.config/yazi/theme.toml) でダークテーマとして指定する。
 
 ```toml
 [flavor]
@@ -191,7 +191,7 @@ y
 | `e` | ホームディレクトリへ移動 | 独自 |
 | `i` | ファイル一覧の絞り込み（`filter --smart`） | 独自 |
 
-独自キーマップの実装は [keymap.toml](keymap.toml) を参照する。`w` はGitリポジトリ内で使用する。標準の `w`（タスク管理）は上書きされている。
+独自キーマップの実装は [keymap.toml](../.config/yazi/keymap.toml) を参照する。`w` はGitリポジトリ内で使用する。標準の `w`（タスク管理）は上書きされている。
 
 ### 6.2 インクリメンタルサーチ・移動アシスト
 
