@@ -55,10 +55,20 @@ mise install
 mise ls
 
 # ==========================================
-# 5. fishプラグインの復元
+# 5. Fisher本体・fishプラグインの復元
 # ==========================================
 
-/opt/homebrew/bin/fish -c 'fisher update'
+/opt/homebrew/bin/fish -c '
+    if not type -q fisher
+        set -l installer "$(curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish)"
+        or exit 1
+
+        echo "$installer" | source
+        or exit 1
+    end
+
+    fisher update
+'
 
 # ==========================================
 # 6. Yaziプラグインの復元
